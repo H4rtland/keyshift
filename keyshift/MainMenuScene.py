@@ -36,7 +36,8 @@ class MainMenuScene(Scene):
                 self.title_shift_time -= self.title_shift_tick
                 self.title.set_text(self.title_shifts.pop(0))
                 if len(self.title_shifts) < 20:
-                    self.title_shift_tick = 16 + 10*(20-len(self.title_shifts))
+                    extra_ms = (20-len(self.title_shifts))
+                    self.title_shift_tick = 16 + 15*extra_ms*(1+(extra_ms/100))**2
 
 
     def next_title(self, current):

@@ -15,8 +15,8 @@ class Keyshift:
 
         self.width = 1280
         self.height = 720
-        self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF+pygame.RESIZABLE)
-        pygame.display.set_caption("WenchScape")
+        self.screen = pygame.display.set_mode((self.width, self.height))
+        pygame.display.set_caption("KEYSHIFT")
 
         self.background = pygame.Surface(self.screen.get_size())
         self.background.fill((0, 0, 0))
