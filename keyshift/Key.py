@@ -19,6 +19,9 @@ class Key(Frame):
         self.blank_key = self.key.image.copy()
         self.get_scene().add(self.key)
 
+        self.highlight = Image(self)
+        self.get_scene().add(self.highlight)
+
         self.label = Text(self)
         self.label.set_text("")
         self.get_scene().add(self.label)
@@ -29,4 +32,7 @@ class Key(Frame):
         self.label.set_text(key)
 
     def press(self):
-        self.key.image.fill((255, 255, 255, 30))
+        #self.key.image.fill((255, 255, 255, 30))
+        self.key.dirty = 1
+        self.highlight.set_image("key_highlight")
+        self.highlight.image.fill((255, 255, 255, 50), special_flags=pygame.BLEND_RGBA_MULT)

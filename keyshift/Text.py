@@ -16,8 +16,8 @@ class Text(Sprite):
         self.x = 0
         self.y = 0
 
-        self.font_name = "Pixeled"
-        self.size = 16
+        self.font_name = "coders_crux"
+        self.size = 32
 
     def set_text(self, text, font_name=None, size=None):
         if font_name is None:

@@ -30,7 +30,7 @@ class MainMenuScene(Scene):
         self.title_shifts = self.title_shifts[::-1]
 
         self.title = Text(self)
-        self.title.set_text(self.title_shifts.pop(0), size=48)
+        self.title.set_text(self.title_shifts.pop(0), size=128)
         self.add(self.title)
 
         self.kb_frame = Frame(self)
@@ -46,7 +46,7 @@ class MainMenuScene(Scene):
 
 
         self.start_text = Text(self.kb_frame)
-        self.start_text.set_text("START", size=8)
+        self.start_text.set_text("START", size=16)
         self.start_text.set_pos(50+25+37-self.start_text.get_width()//2, 50+50+25-self.start_text.get_height()//2)
         self.add(self.start_text)
 
@@ -56,6 +56,8 @@ class MainMenuScene(Scene):
 
         self.title.set_pos(self.engine.width//2 - self.title.get_width()//2, self.engine.height//4 - self.title.get_height()//2)
 
+        self.wait_for_end = 500
+
 
     def tick(self, time_passed):
         self.tick_title(time_passed)
@@ -63,8 +65,11 @@ class MainMenuScene(Scene):
     def tick_end(self, time_passed):
         self.tick_title(time_passed)
         if len(self.sprites) == 0:
-            return True
-        self.sprites.remove(random.choice(list(self.sprites)))
+            self.wait_for_end -= time_passed
+            if self.wait_for_end <= 0:
+                return True
+        else:
+            self.sprites.remove(random.choice(list(self.sprites)))
 
 
     def key_press(self, key):
