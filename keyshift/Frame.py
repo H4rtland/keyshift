@@ -7,6 +7,8 @@ Created on 17/08/2016
 class Frame:
     def __init__(self, parent):
         self.parent = parent
+        if isinstance(self.parent, Frame):
+            self.parent.add(self)
         self.sprites = []
         self._x = 0
         self._y = 0
@@ -47,3 +49,10 @@ class Frame:
     @y.setter
     def y(self, value):
         self._y = value
+
+    def get_scene(self):
+        return self.parent.get_scene()
+
+    def recalculate_rect(self):
+        for sprite in self.sprites:
+            sprite.recalculate_rect()

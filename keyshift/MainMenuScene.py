@@ -12,17 +12,15 @@ from keyshift.Scene import Scene
 from keyshift.Text import Text
 from keyshift.Image import Image
 from keyshift.Key import Key
+from keyshift.GameScene import GameScene
 
 class MainMenuScene(Scene):
     def __init__(self, engine):
         super().__init__(engine)
 
-        self.x = 0
-        self.y = 0
-
         #pygame.mixer.music.set_volume
-        pygame.mixer.music.load("resource/music/asleep.ogg")
-        #pygame.mixer.music.play()
+        pygame.mixer.music.load("resource/music/weightless_thoughts.ogg")
+        pygame.mixer.music.play()
 
         self.title_shifts = ["KEYSHIFT"]
         self.title_shift_tick = 16
@@ -42,7 +40,7 @@ class MainMenuScene(Scene):
             for i in range(0, widths[j]):
                 key = Key(self.kb_frame)
                 key.set_pos(offsets[j]+50*i, 50*j)
-                self.add(key)
+                #self.add(key)
                 #key = Image(self)
                 #key.set_image("key")
 
@@ -60,16 +58,10 @@ class MainMenuScene(Scene):
 
 
     def tick(self, time_passed):
-        if len(self.title_shifts) > 0:
-            self.title_shift_time += time_passed
-            if self.title_shift_time > self.title_shift_tick:
-                self.title_shift_time -= self.title_shift_tick
-                self.title.set_text(self.title_shifts.pop(0))
-                if len(self.title_shifts) < 20:
-                    extra_ms = (20-len(self.title_shifts))
-                    self.title_shift_tick = 16 + 15*extra_ms*(1+(extra_ms/100))**2
+        self.tick_title(time_passed)
 
     def tick_end(self, time_passed):
+        self.tick_title(time_passed)
         if len(self.sprites) == 0:
             return True
         self.sprites.remove(random.choice(list(self.sprites)))
@@ -77,17 +69,28 @@ class MainMenuScene(Scene):
 
     def key_press(self, key):
         if key == pygame.K_s:
-            self.engine.set_scene(Scene)
+            self.engine.set_scene(GameScene)
 
         if key == pygame.K_ESCAPE:
             self.engine.running = False
 
 
     def next_title(self, current):
+        orig = current
         while True:
             current = current+ " "
             shift_index = random.randint(0, len(current)-3)
             new = current[0:shift_index] + current[shift_index+1] + current[shift_index] + current[shift_index+2:len(current)]
-            if new == "KEYSHIFT" or "SHIT" in new:
+            if new == "KEYSHIFT" or "SHIT" in new or new == orig:
                 continue
             return new.replace(" ", "")
+
+    def tick_title(self, time_passed):
+        if len(self.title_shifts) > 0:
+            self.title_shift_time += time_passed
+            if self.title_shift_time > self.title_shift_tick:
+                self.title_shift_time -= self.title_shift_tick
+                self.title.set_text(self.title_shifts.pop(0))
+                if len(self.title_shifts) < 20:
+                    extra_ms = (20-len(self.title_shifts))
+                    self.title_shift_tick = 16 + 10*extra_ms*(1+(extra_ms/100))**2

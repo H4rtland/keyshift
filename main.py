@@ -9,7 +9,9 @@ from keyshift.MainMenuScene import MainMenuScene
 
 class Keyshift:
     def __init__(self):
+        pygame.mixer.pre_init(frequency=4000)
         pygame.init()
+
         self.running = True
         self.clock = pygame.time.Clock()
 
@@ -32,6 +34,8 @@ class Keyshift:
         while self.running:
             time_passed = self.clock.tick_busy_loop(60)
             self.tick(time_passed)
+        pygame.mixer.music.stop()
+        pygame.mixer.quit()
         pygame.quit()
 
     def tick(self, time_passed):

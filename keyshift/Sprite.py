@@ -49,3 +49,6 @@ class Sprite(pygame.sprite.DirtySprite):
     @y.setter
     def y(self, value):
         self._y = value
+
+    def get_scene(self):
+        return self.parent.get_scene()

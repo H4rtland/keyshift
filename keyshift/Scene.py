@@ -8,6 +8,9 @@ import pygame
 
 class Scene:
     def __init__(self, engine):
+        self.x = 0
+        self.y = 0
+
         self.engine = engine
         self.sprites = pygame.sprite.LayeredDirty(())
         self.ending = False
@@ -40,3 +43,6 @@ class Scene:
 
     def key_press(self, key):
         pass
+
+    def get_scene(self):
+        return self
