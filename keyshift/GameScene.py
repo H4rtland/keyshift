@@ -34,10 +34,10 @@ class GameScene(Scene):
 
         self.kb_frame.set_pos(self.engine.width//2 - self.kb_frame.get_width()//2, self.engine.height//2 - self.kb_frame.get_height()//2)
 
-    def key_press(self, key):
+    def key_press(self, key, unicode):
         if key == pygame.K_ESCAPE:
             from keyshift.MainMenuScene import MainMenuScene
             self.engine.set_scene(MainMenuScene)
-        name = pygame.key.name(key).upper()
-        if name in self.keys:
-            self.keys[name].press()
+        unicode = unicode.upper()
+        if unicode in self.keys:
+            self.keys[unicode].press()

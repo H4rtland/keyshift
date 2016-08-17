@@ -15,6 +15,8 @@ class Scene:
         self.sprites = pygame.sprite.LayeredDirty(())
         self.ending = False
 
+        self.scene_lifetime = 0
+
     def start(self):
         pass
 
@@ -22,6 +24,7 @@ class Scene:
         self.ending = True
 
     def do_tick(self, time_passed):
+        self.scene_lifetime += time_passed
         if self.ending:
             end_status = self.tick_end(time_passed)
             if end_status:
@@ -41,7 +44,7 @@ class Scene:
     def draw(self, surface):
         self.sprites.draw(surface)
 
-    def key_press(self, key):
+    def key_press(self, key, unicode):
         pass
 
     def get_scene(self):

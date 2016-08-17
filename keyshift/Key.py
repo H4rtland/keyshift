@@ -35,4 +35,4 @@ class Key(Frame):
         #self.key.image.fill((255, 255, 255, 30))
         self.key.dirty = 1
         self.highlight.set_image("key_highlight")
-        self.highlight.image.fill((255, 255, 255, 50), special_flags=pygame.BLEND_RGBA_MULT)
+        self.highlight.image.fill((255, 255, 255, 35), special_flags=pygame.BLEND_RGBA_MULT)

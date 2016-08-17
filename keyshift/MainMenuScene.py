@@ -6,6 +6,9 @@ Created on 16/08/2016
 
 import pygame
 import random
+import math
+
+import sys
 
 from keyshift.Frame import Frame
 from keyshift.Scene import Scene
@@ -13,14 +16,14 @@ from keyshift.Text import Text
 from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.GameScene import GameScene
+from keyshift.Audio import Audio
 
 class MainMenuScene(Scene):
     def __init__(self, engine):
         super().__init__(engine)
 
-        #pygame.mixer.music.set_volume
-        pygame.mixer.music.load("resource/music/weightless_thoughts.ogg")
-        pygame.mixer.music.play()
+
+        Audio.play_music("resource/music/weightless_thoughts.ogg")
 
         self.title_shifts = ["KEYSHIFT"]
         self.title_shift_tick = 16
@@ -32,6 +35,10 @@ class MainMenuScene(Scene):
         self.title = Text(self)
         self.title.set_text(self.title_shifts.pop(0), size=128)
         self.add(self.title)
+
+        self.fps = Text(self)
+        self.fps.set_pos(1, 1)
+        self.add(self.fps)
 
         self.kb_frame = Frame(self)
         widths = [12, 12, 12, 11]
@@ -58,9 +65,37 @@ class MainMenuScene(Scene):
 
         self.wait_for_end = 500
 
+        self.a = Image(self)
+        self.a.set_blank(100, 100, colour=(0, 0, 0))
+        self.a.set_pos(300, 0)
+        #self.add(self.a)
+        self.steps = 0
+        #for i in range(0, 45):
+        #    pygame.draw.arc(a.image, (255, 255, 255), (25-i, 25-i, 50-i, 50-i), 0, math.pi/2, 2)
+        #for i in range(0, 90*100):
+        #    pygame.draw.line(a.image, (255, 255, 255), (50, 50), (50+40*math.cos(math.pi*i/180/100), 50+40*math.sin(math.pi*i/180/100)))
+        for x in range(0, 100):
+            for y in range(0, 100):
+                if (x-50)**2 + (y-50)**2 < 40**2:
+                    if math.atan2((x-50), (y-50)) < math.pi/2:
+                        self.a.image.set_at((x, y), (255, 255, 255))
+
 
     def tick(self, time_passed):
         self.tick_title(time_passed)
+        if self.scene_lifetime < 1550 and False:
+            self.a.image.lock()
+            self.a.image.fill((0, 0, 0))
+            self.steps += 1
+            for x in range(0, 100):
+                for y in range(0, 100):
+                    if (x-50)**2 + (y-50)**2 < 40**2:
+                        if math.atan2(-(x-50), (y-50)) < round(20*(2*math.pi*(self.scene_lifetime/1500) - math.pi))/20:
+                            self.a.image.set_at((x, y), (255, 255, 255))
+            self.a.dirty = 1
+            self.a.image.unlock()
+        self.fps.set_text("{0:.02f}".format(self.engine.clock.get_fps()))
+
 
     def tick_end(self, time_passed):
         self.tick_title(time_passed)
@@ -72,7 +107,7 @@ class MainMenuScene(Scene):
             self.sprites.remove(random.choice(list(self.sprites)))
 
 
-    def key_press(self, key):
+    def key_press(self, key, unicode):
         if key == pygame.K_s:
             self.engine.set_scene(GameScene)
 

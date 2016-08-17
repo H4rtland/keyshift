@@ -5,6 +5,8 @@ Created on 16/08/2016
 '''
 
 import pygame
+import sys
+
 from keyshift.MainMenuScene import MainMenuScene
 
 class Keyshift:
@@ -15,9 +17,9 @@ class Keyshift:
         self.running = True
         self.clock = pygame.time.Clock()
 
-        self.width = 1280
-        self.height = 720
-        self.screen = pygame.display.set_mode((self.width, self.height))#, pygame.FULLSCREEN)
+        self.width = 1920
+        self.height = 1080
+        self.screen = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
         pygame.display.set_caption("KEYSHIFT")
 
         self.background = pygame.Surface(self.screen.get_size())
@@ -44,7 +46,8 @@ class Keyshift:
                 self.running = False
                 return
             if event.type == pygame.KEYDOWN:
-                self.scene.key_press(event.key)
+                #print(event.scancode, event.key, event.unicode)
+                self.scene.key_press(event.key, event.unicode)
 
         self.scene.sprites.clear(self.screen, self.background)
         self.scene.do_tick(time_passed)
