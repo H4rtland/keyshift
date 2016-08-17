@@ -5,13 +5,17 @@ Created on 16/08/2016
 '''
 
 import pygame
+from keyshift.Frame import Frame
 
 class Sprite(pygame.sprite.DirtySprite):
-    def __init__(self):
+    def __init__(self, parent):
         super().__init__()
+        self.parent = parent
+        if isinstance(self.parent, Frame):
+            self.parent.add(self)
 
-        self.x = 0
-        self.y = 0
+        self._x = 0
+        self._y = 0
 
         self.image = pygame.Surface((0, 0))
         self.rect = pygame.Rect((self.x, self.y, 0, 0))
@@ -29,3 +33,19 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def get_height(self):
         return self.image.get_height()
+
+    @property
+    def x(self):
+        return self.parent.x + self._x
+
+    @property
+    def y(self):
+        return self.parent.y + self._y
+
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @y.setter
+    def y(self, value):
+        self._y = value

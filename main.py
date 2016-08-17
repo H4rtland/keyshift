@@ -15,13 +15,14 @@ class Keyshift:
 
         self.width = 1280
         self.height = 720
-        self.screen = pygame.display.set_mode((self.width, self.height))
+        self.screen = pygame.display.set_mode((self.width, self.height))#, pygame.FULLSCREEN)
         pygame.display.set_caption("KEYSHIFT")
 
         self.background = pygame.Surface(self.screen.get_size())
         self.background.fill((0, 0, 0))
 
         self.scene = None
+        self.next_scene_class = None
         self.set_scene(MainMenuScene)
 
 
@@ -38,9 +39,11 @@ class Keyshift:
             if event.type == pygame.QUIT:
                 self.running = False
                 return
+            if event.type == pygame.KEYDOWN:
+                self.scene.key_press(event.key)
 
         self.scene.sprites.clear(self.screen, self.background)
-        self.scene.tick(time_passed)
+        self.scene.do_tick(time_passed)
         self.scene.draw(self.screen)
 
         pygame.display.flip()
@@ -49,9 +52,14 @@ class Keyshift:
     def set_scene(self, scene):
         if not self.scene is None:
             self.scene.end()
-        self.scene = scene(self)
-        self.scene.start()
 
+        self.next_scene_class = scene
+        if self.scene is None:
+            self.next_scene()
+
+    def next_scene(self):
+        self.scene = self.next_scene_class(self)
+        self.scene.start()
 
 
 

@@ -31,12 +31,12 @@ class Resources:
         if name in Resources.images:
             return Resources.images[name].copy()
         if __debug__:
-            path = os.path.join("resource/graphics/", name)
+            path = os.path.join("resource/graphics/", name) + ".png"
             image = pygame.image.load(path)
             image = image.convert_alpha()
             return image
         else:
-            path = os.path.join("graphics/", name)
+            path = os.path.join("graphics/", name) + ".png"
             imageFile = Resources.archive.read(path)
             image = pygame.image.load(io.BytesIO(imageFile))
             image = image.convert_alpha()

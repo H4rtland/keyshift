@@ -10,13 +10,13 @@ from keyshift.Sprite import Sprite
 from keyshift.Resources import Resources
 
 class Text(Sprite):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent):
+        super().__init__(parent)
 
         self.x = 0
         self.y = 0
 
-        self.font_name = "PixelCaps"
+        self.font_name = "Pixeled"
         self.size = 16
 
     def set_text(self, text, font_name=None, size=None):
