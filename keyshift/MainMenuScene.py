@@ -38,7 +38,7 @@ class MainMenuScene(Scene):
 
         self.fps = Text(self)
         self.fps.set_pos(1, 1)
-        self.add(self.fps)
+        #self.add(self.fps)
 
         self.kb_frame = Frame(self)
         widths = [12, 12, 12, 11]

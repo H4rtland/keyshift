@@ -41,6 +41,9 @@ class Scene:
     def add(self, sprite):
         self.sprites.add(sprite)
 
+    def remove(self, sprite):
+        self.sprites.remove(sprite)
+
     def draw(self, surface):
         self.sprites.draw(surface)
 

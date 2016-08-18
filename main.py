@@ -14,6 +14,8 @@ class Keyshift:
         pygame.mixer.pre_init(frequency=4000)
         pygame.init()
 
+        pygame.mouse.set_visible(False)
+
         self.running = True
         self.clock = pygame.time.Clock()
 
