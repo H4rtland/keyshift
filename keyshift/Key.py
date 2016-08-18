@@ -20,6 +20,8 @@ class Key(Frame):
         self.get_scene().add(self.key)
 
         self.highlight = Image(self)
+        self.highlight.set_image("key_inner")
+        self.highlight.hide()
         self.get_scene().add(self.highlight)
 
         self.label = Text(self)
@@ -28,11 +30,26 @@ class Key(Frame):
         self.label.set_pos(10, 4)
         #self.get_scene()
 
+        self.press_time = 0
+
     def set_key(self, key):
         self.label.set_text(key)
 
     def press(self):
         #self.key.image.fill((255, 255, 255, 30))
-        self.key.dirty = 1
-        self.highlight.set_image("key_highlight")
-        self.highlight.image.fill((255, 255, 255, 35), special_flags=pygame.BLEND_RGBA_MULT)
+        self.highlight.show()
+        self.key.hide()
+        self.press_time = 1
+        self.label.set_pos(11, 6)
+        self.label.set_text(self.label.current_text, size=24)
+        #self.highlight.image.fill((255, 255, 255, 35), special_flags=pygame.BLEND_RGBA_MULT)
+
+    def tick(self, time_passed):
+        if self.press_time > 0:
+            self.press_time += time_passed
+        if self.press_time >= 100:
+            self.highlight.hide()
+            self.key.show()
+            self.label.set_pos(10, 4)
+            self.press_time = 0
+            self.label.set_text(self.label.current_text, size=32)

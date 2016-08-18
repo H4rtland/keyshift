@@ -4,6 +4,16 @@ after 30, each round of 15 has it's own "rule"
 - spiralling "cloud chamber"
 - three times it launches four at the same time horizonally, one for each row
 - rotating keyboard?
-
+- quickshift mode
 
 main menu has space bar which takes you to a keyboard layout screen
+
+allowed maybe 3 lives per round of 15?
+
+mechanical keyboard mode *click click*
+
+insane difficulty has "snake"
+
+hard 3 hearts
+normal 4 hearts
+easy 5 hearts

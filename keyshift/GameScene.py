@@ -65,7 +65,7 @@ class GameScene(Scene):
         unicode = unicode.upper()
         if unicode in self.keys:
             key = self.keys[unicode]
-            #key.press()
+            key.press()
             for blip in self.blips:
                 if key.key.rect.contains(blip.rect):
                     self.remove(blip)
@@ -81,6 +81,8 @@ class GameScene(Scene):
                     break
 
     def tick(self, time_passed):
+        for key in self.keys:
+            self.keys[key].tick(time_passed)
         if self.shifting:
             if len(self.keys_to_remove) > 0:
                 key = random.choice(self.keys_to_remove)

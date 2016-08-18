@@ -52,3 +52,11 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def get_scene(self):
         return self.parent.get_scene()
+
+    def show(self):
+        self.visible = True
+        self.dirty = 1
+
+    def hide(self):
+        self.visible = False
+        self.dirty = 1
