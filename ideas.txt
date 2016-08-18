@@ -1,0 +1,6 @@
+after 30, each round of 15 has it's own "rule"
+- "sudden death"
+- can only use each key once, then they disappear
+- spiralling "cloud chamber"
+- three times it launches four at the same time horizonally, one for each row
+- rotating keyboard?
