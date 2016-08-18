@@ -7,12 +7,15 @@ Created on 17/08/2016
 import math
 import random
 import pygame
+import time
 
 from keyshift.Scene import Scene
 from keyshift.Frame import Frame
 from keyshift.Text import Text
+from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.Blip import Blip
+from keyshift.Resources import Resources
 
 
 class GameScene(Scene):
@@ -27,6 +30,7 @@ class GameScene(Scene):
         key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
 
         self.keys = {}
+        self.last_5_presses = []
 
         self.kb_frame = Frame(self)
         widths = [12, 12, 12, 11]
@@ -58,7 +62,20 @@ class GameScene(Scene):
         self.imminent_text.set_text("")
         self.add(self.imminent_text)
 
+        self.hearts = Image(self)
+        self.hearts.set_blank(96, 32)
+        self.heart_graphic = Resources.load_image("heart")
+        self.heart_graphic = pygame.transform.scale(self.heart_graphic, (16, 16))
+        self.hearts.image.blit(self.heart_graphic, (0, 0))
+        self.add(self.hearts)
+
     def key_press(self, key, unicode):
+        if len(self.last_5_presses) > 0:
+            if time.time() - self.last_5_presses[0] < 1:
+                return
+        self.last_5_presses.append(time.time())
+        if len(self.last_5_presses) > 5:
+            self.last_5_presses = self.last_5_presses[1:]
         if key == pygame.K_ESCAPE:
             from keyshift.MainMenuScene import MainMenuScene
             self.engine.set_scene(MainMenuScene)

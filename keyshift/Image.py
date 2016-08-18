@@ -18,7 +18,7 @@ class Image(Sprite):
         self.image = image
         self.recalculate_rect()
 
-    def set_blank(self, w, h, colour=(255, 255, 255, 255)):
+    def set_blank(self, w, h, colour=(0, 0, 0, 0)):
         self.image = pygame.Surface((w, h), flags=pygame.SRCALPHA)
         self.image.fill(colour)
         self.recalculate_rect()
