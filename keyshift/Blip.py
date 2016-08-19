@@ -11,7 +11,7 @@ from keyshift.Image import Image
 class Blip(Image):
     def __init__(self, parent):
         super().__init__(parent)
-        self.set_blank(2, 2, (255, 255, 255))
+        self.set_blank(3, 3, (255, 255, 255))
         self.speed = 2.5
         self.angle = 0
 
