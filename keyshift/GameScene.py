@@ -15,7 +15,8 @@ from keyshift.Text import Text
 from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.Blip import Blip
-from keyshift.Resources import Resources
+from keyshift.HeartDisplay import HeartDisplay
+
 
 
 class GameScene(Scene):
@@ -50,6 +51,7 @@ class GameScene(Scene):
         self.score = 0
         self.shifting = False
         self.keys_to_remove = []
+        self.lives = 5
 
         self.score_text = Text(self)
         self.score_text.set_text("Score: 0")
@@ -58,15 +60,19 @@ class GameScene(Scene):
 
         self.imminent_text = Text(self)
         self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
-        self.imminent_text.set_pos(self.engine.width//2-self.imminent_text.get_width()//2, self.engine.height//4+50)
+        self.imminent_text.set_pos(self.engine.width//2-self.imminent_text.get_width()//2, self.engine.height//4+60)
         self.imminent_text.set_text("")
         self.add(self.imminent_text)
 
-        self.hearts = Image(self)
+        """self.hearts = Image(self)
         self.hearts.set_blank(96, 32)
         self.heart_graphic = Resources.load_image("heart")
         self.heart_graphic = pygame.transform.scale(self.heart_graphic, (16, 16))
         self.hearts.image.blit(self.heart_graphic, (0, 0))
+        self.add(self.hearts)"""
+        self.hearts = HeartDisplay(self)
+        self.hearts.set_hearts(5)
+        self.hearts.set_pos(lambda: self.engine.width//2-self.hearts.get_width()//2, self.engine.height//4+30)
         self.add(self.hearts)
 
     def key_press(self, key, unicode):
@@ -134,8 +140,21 @@ class GameScene(Scene):
                 self.add(blip)
                 self.blips.append(blip)
 
+            to_remove = []
             for blip in self.blips:
                 blip.tick(time_passed)
+                if blip.x+blip.get_width() < 0 or blip.x > self.engine.width or blip.y+blip.get_height() < 0 or blip.y > self.engine.height:
+                        self.remove(blip)
+                        to_remove.append(blip)
+                        self.lives -= 1
+
+            self.blips = [blip for blip in self.blips if not blip in to_remove]
+
+            self.hearts.set_hearts(self.lives)
+
+            if self.lives < 0:
+                from keyshift.MainMenuScene import MainMenuScene
+                self.engine.set_scene(MainMenuScene)
 
     def tick_end(self, time_passed):
         for sprite in self.sprites:

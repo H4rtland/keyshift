@@ -36,11 +36,17 @@ class Sprite(pygame.sprite.DirtySprite):
 
     @property
     def x(self):
-        return self.parent.x + self._x
+        _x = self._x
+        if callable(_x):
+            _x = _x()
+        return self.parent.x + _x
 
     @property
     def y(self):
-        return self.parent.y + self._y
+        _y = self._y
+        if callable(_y):
+            _y = _y()
+        return self.parent.y + _y
 
     @x.setter
     def x(self, value):
