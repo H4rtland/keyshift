@@ -23,6 +23,8 @@ class GameScene(Scene):
     def __init__(self, engine):
         super().__init__(engine)
 
+        self.game_start_time = time.time()
+
         self.blips = []
 
         self.time_to_next_blip = 1000
@@ -31,7 +33,7 @@ class GameScene(Scene):
         key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
 
         self.keys = {}
-        self.last_5_presses = []
+        self.last_5_presses = [0, 0, 0, 0, 0]
 
         self.kb_frame = Frame(self)
         widths = [12, 12, 12, 11]
@@ -64,15 +66,10 @@ class GameScene(Scene):
         self.imminent_text.set_text("")
         self.add(self.imminent_text)
 
-        """self.hearts = Image(self)
-        self.hearts.set_blank(96, 32)
-        self.heart_graphic = Resources.load_image("heart")
-        self.heart_graphic = pygame.transform.scale(self.heart_graphic, (16, 16))
-        self.hearts.image.blit(self.heart_graphic, (0, 0))
-        self.add(self.hearts)"""
         self.hearts = HeartDisplay(self)
         self.hearts.set_hearts(5)
         self.hearts.set_pos(lambda: self.engine.width//2-self.hearts.get_width()//2, self.engine.height//4+30)
+        self.hearts.hide()
         self.add(self.hearts)
 
     def key_press(self, key, unicode):
@@ -94,13 +91,7 @@ class GameScene(Scene):
                     self.remove(blip)
                     self.blips = [b for b in self.blips if not b is blip]
                     self.score += 1
-                    self.score_text.set_text("Score: {}".format(self.score))
-                    if (self.score+2) % 15 == 0:
-                        self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
-                    if self.score % 15 == 0:
-                        self.imminent_text.set_text(" KEYSHIFTING NOW ", size=64)
-                        self.shifting = True
-                        self.keys_to_remove = list(self.keys.values())
+                    self.score_up()
                     break
 
     def tick(self, time_passed):
@@ -139,6 +130,8 @@ class GameScene(Scene):
                 blip.angle = math.atan2(aiming_for[0]-pos[0], aiming_for[1]-pos[1])
                 self.add(blip)
                 self.blips.append(blip)
+                if self.score < 15:
+                    blip.life_cost = 0
 
             to_remove = []
             for blip in self.blips:
@@ -146,19 +139,34 @@ class GameScene(Scene):
                 if blip.x+blip.get_width() < 0 or blip.x > self.engine.width or blip.y+blip.get_height() < 0 or blip.y > self.engine.height:
                         self.remove(blip)
                         to_remove.append(blip)
-                        self.lives -= 1
+                        if self.score >= 15:
+                            self.lives -= 1
 
             self.blips = [blip for blip in self.blips if not blip in to_remove]
 
             self.hearts.set_hearts(self.lives)
 
             if self.lives < 0:
-                from keyshift.MainMenuScene import MainMenuScene
-                self.engine.set_scene(MainMenuScene)
+                from keyshift.EndScene import EndScene
+                self.engine.set_scene(EndScene, self.score, int(time.time()-self.game_start_time))
 
     def tick_end(self, time_passed):
         for sprite in self.sprites:
             self.remove(sprite)
             sprite.dirty = 1
-        self.engine.screen.fill((0, 0, 0))
         return True
+
+    def score_up(self):
+        self.score_text.set_text("Score: {}".format(self.score))
+        if (self.score+2) % 15 == 0:
+            self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
+        if self.score % 15 == 0:
+            self.imminent_text.set_text(" KEYSHIFTING NOW ", size=64)
+            self.shifting = True
+            self.keys_to_remove = list(self.keys.values())
+            self.lives = 5
+
+        if self.score == 15:
+            self.hearts.show()
+
+        self.hearts.set_hearts(self.lives)

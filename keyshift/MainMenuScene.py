@@ -123,6 +123,8 @@ class MainMenuScene(Scene):
 
     def tick_end(self, time_passed):
         self.tick_title(time_passed)
+        for key in self.keys:
+            self.keys[key].tick(time_passed)
         if len(self.sprites) == 0:
             self.wait_for_end -= time_passed
             if self.wait_for_end <= 0:
@@ -135,6 +137,7 @@ class MainMenuScene(Scene):
         unicode = unicode.upper()
         if unicode in self.keys:
             if unicode == self.start_key:
+                #from keyshift.EndScene import EndScene
                 self.engine.set_scene(GameScene)
             self.keys[unicode].press()
 

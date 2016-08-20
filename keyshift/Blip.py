@@ -14,6 +14,7 @@ class Blip(Image):
         self.set_blank(3, 3, (255, 255, 255))
         self.speed = 2.5
         self.angle = 0
+        self.life_cost = 1
 
     def tick(self, time_passed):
         x = self.x + self.speed*math.sin(self.angle)

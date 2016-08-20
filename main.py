@@ -29,6 +29,7 @@ class Keyshift:
 
         self.scene = None
         self.next_scene_class = None
+        self.next_scene_args = ()
         self.set_scene(MainMenuScene)
 
 
@@ -58,16 +59,18 @@ class Keyshift:
         pygame.display.flip()
 
 
-    def set_scene(self, scene):
+    def set_scene(self, scene, *args):
         if not self.scene is None:
             self.scene.end()
 
         self.next_scene_class = scene
+        self.next_scene_args = args
         if self.scene is None:
             self.next_scene()
 
     def next_scene(self):
-        self.scene = self.next_scene_class(self)
+        self.screen.fill((0, 0, 0))
+        self.scene = self.next_scene_class(self, *self.next_scene_args)
         self.scene.start()
 
 
