@@ -66,3 +66,6 @@ class Sprite(pygame.sprite.DirtySprite):
     def hide(self):
         self.visible = False
         self.dirty = 1
+
+    def is_visible(self):
+        return self.visible and self.parent.is_visible()

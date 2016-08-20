@@ -12,6 +12,7 @@ class Frame:
         self.sprites = []
         self._x = 0
         self._y = 0
+        self.visible = True
 
     def add(self, sprite):
         self.sprites.append(sprite)
@@ -56,3 +57,12 @@ class Frame:
     def recalculate_rect(self):
         for sprite in self.sprites:
             sprite.recalculate_rect()
+
+    def show(self):
+        self.visible = True
+
+    def hide(self):
+        self.visible = False
+
+    def is_visible(self):
+        return self.visible and self.parent.is_visible()
