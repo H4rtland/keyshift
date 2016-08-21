@@ -76,16 +76,61 @@ class GameScene(Scene):
         self.hearts.hide()
         self.add(self.hearts)
 
+        if __debug__:
+            self.doing_command = False
+            self.command_history = []
+            self.current_command = ""
+            self.current_command_text = Text(self)
+            self.current_command_text.set_text("HI")
+            self.current_command_text.set_pos(5, self.engine.height-5-self.current_command_text.get_height())
+            self.current_command_text.set_text("> ")
+            self.current_command_text.hide()
+            self.add(self.current_command_text)
+
     def key_press(self, key, unicode):
+        if key == pygame.K_ESCAPE:
+            from keyshift.MainMenuScene import MainMenuScene
+            self.engine.set_scene(MainMenuScene)
+        if __debug__:
+            if key == pygame.K_BACKQUOTE:
+                self.doing_command = not self.doing_command
+                if self.doing_command:
+                    self.current_command_text.show()
+                    for command in self.command_history:
+                        command.show()
+                else:
+                    self.current_command_text.hide()
+                    for command in self.command_history:
+                        command.hide()
+                return
+            if self.doing_command:
+                if key == pygame.K_BACKSPACE:
+                    self.current_command = self.current_command[:-1]
+                elif key == pygame.K_RETURN:
+                    c = self.current_command.lower().split(" ")
+                    if c[0] == "set_score":
+                        if len(c) > 1:
+                            if c[1].isdigit():
+                                self.score = int(c[1])
+                                self.score_up()
+                    t = Text(self)
+                    t.set_text(self.current_command)
+                    self.add(t)
+                    self.command_history.append(t)
+                    self.current_command = ""
+                else:
+                    if len(unicode) == 1:
+                        self.current_command += unicode
+                self.current_command_text.set_text("> " + self.current_command)
+                for i, command in enumerate(self.command_history[::-1]):
+                    command.set_pos(5, self.engine.height-5-64-(32*i))
+                return
         if len(self.last_5_presses) > 0:
             if time.time() - self.last_5_presses[0] < 1:
                 return
         self.last_5_presses.append(time.time())
         if len(self.last_5_presses) > 5:
             self.last_5_presses = self.last_5_presses[1:]
-        if key == pygame.K_ESCAPE:
-            from keyshift.MainMenuScene import MainMenuScene
-            self.engine.set_scene(MainMenuScene)
         unicode = unicode.upper()
         if unicode in self.keys:
             key = self.keys[unicode]
@@ -99,6 +144,9 @@ class GameScene(Scene):
                     break
 
     def tick(self, time_passed):
+        if __debug__:
+            if self.doing_command:
+                return
         for key in self.keys:
             self.keys[key].tick(time_passed)
         if self.shifting:

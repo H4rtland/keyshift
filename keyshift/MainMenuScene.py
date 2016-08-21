@@ -39,18 +39,7 @@ class MainMenuScene(Scene):
 
         self.fps = Text(self)
         self.fps.set_pos(1, 1)
-        #self.add(self.fps)
 
-        """self.kb_frame = Frame(self)
-        widths = [12, 12, 12, 11]
-        offsets = [0, 25, 37, 12]
-        for j in range(0, 4):
-            for i in range(0, widths[j]):
-                key = Key(self.kb_frame)
-                key.set_pos(offsets[j]+50*i, 50*j)
-                #self.add(key)
-                #key = Image(self)
-                #key.set_image("key")"""
 
         key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
         self.keys = {}

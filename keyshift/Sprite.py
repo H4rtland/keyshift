@@ -27,6 +27,7 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def recalculate_rect(self):
         self.rect = pygame.Rect((self.x, self.y, self.image.get_width(), self.image.get_height()))
+        self.dirty = 1
 
     def get_width(self):
         return self.image.get_width()
