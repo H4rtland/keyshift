@@ -55,20 +55,24 @@ class GameScene(Scene):
         self.keys_to_remove = []
         self.lives = 5
 
+        interface_pos_y = self.kb_frame.y-172
+
         self.score_text = Text(self)
         self.score_text.set_text("Score: 0")
-        self.score_text.set_pos(self.engine.width//2-self.score_text.get_width()//2, self.engine.height//4)
+        self.score_text.set_pos(self.engine.width//2-self.score_text.get_width()//2, interface_pos_y) # self.engine.height//3
         self.add(self.score_text)
+
+
 
         self.imminent_text = Text(self)
         self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
-        self.imminent_text.set_pos(self.engine.width//2-self.imminent_text.get_width()//2, self.engine.height//4+60)
+        self.imminent_text.set_pos(self.engine.width//2-self.imminent_text.get_width()//2, interface_pos_y+60)
         self.imminent_text.set_text("")
         self.add(self.imminent_text)
 
         self.hearts = HeartDisplay(self)
         self.hearts.set_hearts(5)
-        self.hearts.set_pos(lambda: self.engine.width//2-self.hearts.get_width()//2, self.engine.height//4+30)
+        self.hearts.set_pos(lambda: self.engine.width//2-self.hearts.get_width()//2, interface_pos_y+30)
         self.hearts.hide()
         self.add(self.hearts)
 
@@ -140,7 +144,7 @@ class GameScene(Scene):
                         self.remove(blip)
                         to_remove.append(blip)
                         if self.score >= 15:
-                            self.lives -= 1
+                            self.lives -= blip.life_cost
 
             self.blips = [blip for blip in self.blips if not blip in to_remove]
 
