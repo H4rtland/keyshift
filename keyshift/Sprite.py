@@ -64,11 +64,11 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def show(self):
         self.showing = True
-        self.dirty = 1
+        self.recalculate_rect()
 
     def hide(self):
         self.showing = False
-        self.dirty = 1
+        self.recalculate_rect()
 
     def is_showing(self):
         return self.showing and self.parent.is_showing()

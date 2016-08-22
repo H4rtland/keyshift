@@ -6,7 +6,7 @@ Created on 22/08/2016
 
 from keyshift.modes.Mode import Mode
 
-class Break:
+class Break(Mode):
     name = "BREAK"
 
     @staticmethod

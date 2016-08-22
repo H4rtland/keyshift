@@ -18,7 +18,6 @@ class Mode:
 
     @staticmethod
     def press(scene, key):
-        print("Pressing key")
         pass
 
     @staticmethod

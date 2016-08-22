@@ -8,6 +8,9 @@ import math
 import random
 import pygame
 import time
+import inspect
+
+import keyshift.modes
 
 from keyshift.Scene import Scene
 from keyshift.Frame import Frame
@@ -18,7 +21,6 @@ from keyshift.Blip import Blip
 from keyshift.HeartDisplay import HeartDisplay
 from keyshift.modes.Mode import Mode
 from keyshift.modes.Break import Break
-
 
 
 class GameScene(Scene):
@@ -78,7 +80,15 @@ class GameScene(Scene):
         self.hearts.hide()
         self.add(self.hearts)
 
-        self.mode = Break()
+
+        self.mode = Mode()
+        self.modes = []
+        for mode in keyshift.modes.__dict__.values():
+            if inspect.ismodule(mode):
+                for c in mode.__dict__.values():
+                    if inspect.isclass(c):
+                        if not c is Mode and issubclass(c, Mode):
+                            self.modes.append(c)
 
         if __debug__:
             self.doing_command = False
@@ -140,7 +150,7 @@ class GameScene(Scene):
         unicode = unicode.upper()
         if unicode in self.keys:
             key = self.keys[unicode]
-            if key.is_visible():
+            if key.is_showing():
                 key.press()
                 for blip in self.blips:
                     if key.key.rect.contains(blip.rect):
@@ -171,7 +181,7 @@ class GameScene(Scene):
                 for label in self.keys:
                     self.keys[label].label.set_text(label)
                 self.shifting = False
-                self.imminent_text.set_text("")
+                self.imminent_text.set_text("MODE: {}".format(self.mode.name))
         else:
             self.time_to_next_blip -= time_passed
             if self.time_to_next_blip <= 0:
@@ -226,6 +236,11 @@ class GameScene(Scene):
             self.keys_to_remove = list(self.keys.values())
             self.lives = 5
             self.mode.end(self)
+            if self.score >= 30:
+                self.mode = random.choice(self.modes)
+                #self.imminent_text.set_text("MODE: {}".format(self.mode.name))
+                self.mode.start(self)
+
 
         if self.score >= 15:
             self.hearts.show()

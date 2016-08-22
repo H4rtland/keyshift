@@ -53,5 +53,5 @@ class Scene:
     def get_scene(self):
         return self
 
-    def is_visible(self):
+    def is_showing(self):
         return True
