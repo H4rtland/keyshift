@@ -16,6 +16,8 @@ from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.Blip import Blip
 from keyshift.HeartDisplay import HeartDisplay
+from keyshift.modes.Mode import Mode
+from keyshift.modes.Break import Break
 
 
 
@@ -66,7 +68,7 @@ class GameScene(Scene):
 
         self.imminent_text = Text(self)
         self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
-        self.imminent_text.set_pos(self.engine.width//2-self.imminent_text.get_width()//2, interface_pos_y+60)
+        self.imminent_text.set_pos(lambda: self.engine.width//2-self.imminent_text.get_width()//2, interface_pos_y+60)
         self.imminent_text.set_text("")
         self.add(self.imminent_text)
 
@@ -75,6 +77,8 @@ class GameScene(Scene):
         self.hearts.set_pos(lambda: self.engine.width//2-self.hearts.get_width()//2, interface_pos_y+30)
         self.hearts.hide()
         self.add(self.hearts)
+
+        self.mode = Break()
 
         if __debug__:
             self.doing_command = False
@@ -113,6 +117,8 @@ class GameScene(Scene):
                             if c[1].isdigit():
                                 self.score = int(c[1])
                                 self.score_up()
+                    if c[0] == "set_imminent":
+                        self.imminent_text.set_text(" ".join(c[1:]).upper(), size=64)
                     t = Text(self)
                     t.set_text(self.current_command)
                     self.add(t)
@@ -134,14 +140,16 @@ class GameScene(Scene):
         unicode = unicode.upper()
         if unicode in self.keys:
             key = self.keys[unicode]
-            key.press()
-            for blip in self.blips:
-                if key.key.rect.contains(blip.rect):
-                    self.remove(blip)
-                    self.blips = [b for b in self.blips if not b is blip]
-                    self.score += 1
-                    self.score_up()
-                    break
+            if key.is_visible():
+                key.press()
+                for blip in self.blips:
+                    if key.key.rect.contains(blip.rect):
+                        self.mode.press(self, key)
+                        self.remove(blip)
+                        self.blips = [b for b in self.blips if not b is blip]
+                        self.score += 1
+                        self.score_up()
+                        break
 
     def tick(self, time_passed):
         if __debug__:
@@ -217,8 +225,11 @@ class GameScene(Scene):
             self.shifting = True
             self.keys_to_remove = list(self.keys.values())
             self.lives = 5
+            self.mode.end(self)
 
-        if self.score == 15:
+        if self.score >= 15:
             self.hearts.show()
+        else:
+            self.hearts.hide()
 
         self.hearts.set_hearts(self.lives)

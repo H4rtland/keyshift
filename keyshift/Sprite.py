@@ -19,6 +19,7 @@ class Sprite(pygame.sprite.DirtySprite):
 
         self.image = pygame.Surface((0, 0))
         self.rect = pygame.Rect((self.x, self.y, 0, 0))
+        self.showing = True
 
     def set_pos(self, x, y):
         self.x = x
@@ -27,6 +28,7 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def recalculate_rect(self):
         self.rect = pygame.Rect((self.x, self.y, self.image.get_width(), self.image.get_height()))
+        self.visible = self.is_showing()
         self.dirty = 1
 
     def get_width(self):
@@ -61,12 +63,12 @@ class Sprite(pygame.sprite.DirtySprite):
         return self.parent.get_scene()
 
     def show(self):
-        self.visible = True
+        self.showing = True
         self.dirty = 1
 
     def hide(self):
-        self.visible = False
+        self.showing = False
         self.dirty = 1
 
-    def is_visible(self):
-        return self.visible and self.parent.is_visible()
+    def is_showing(self):
+        return self.showing and self.parent.is_showing()
