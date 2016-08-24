@@ -258,7 +258,7 @@ class GameScene(Scene):
 
             if self.lives < 0:
                 from keyshift.EndScene import EndScene
-                self.engine.set_scene(EndScene, self.score, int(time.time()-self.game_start_time))
+                self.engine.set_scene(EndScene, self.score, int(time.time()-self.game_start_time), self.mode.name)
 
     def tick_end(self, time_passed):
         for sprite in self.sprites:

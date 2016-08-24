@@ -11,7 +11,7 @@ from keyshift.Frame import Frame
 from keyshift.Text import Text
 
 class EndScene(Scene):
-    def __init__(self, engine, score, time):
+    def __init__(self, engine, score, time, killer):
         super().__init__(engine)
 
         self.game_over = Text(self)
@@ -27,21 +27,25 @@ class EndScene(Scene):
 
         self.stats_frame = Frame(self)
 
-        stats= []
+        stats = []
+        stat_texts = []
 
-        score_text = Text(self.stats_frame)
-        score_text.set_text("SCORE: {}".format(score))
-        self.add(score_text)
-        stats.append(score_text)
+        stat_texts.append("SCORE: {}".format(score))
 
         minutes, seconds = divmod(time, 60)
-        time_text = Text(self.stats_frame)
-        time_text.set_text("TIME: {}m {}s".format(minutes, seconds))
-        self.add(time_text)
-        stats.append(time_text)
+        stat_texts.append("TIME: {}m {}s".format(minutes, seconds))
+
+        if not killer is "":
+            stat_texts.append("KILLER: {}".format(killer))
 
         for i, stat in enumerate(stats):
-            stat.set_pos((self.stats_frame.get_width()-stat.get_width())//2, i*25)
+            text = Text(self.stats_frame)
+            text.set_text(stat)
+            self.add(text)
+            stat_texts.append(text)
+
+        for i, stat_text in enumerate(stat_texts):
+            stat_text.set_pos((self.stats_frame.get_width()-stat_text.get_width())//2, i*25)
 
         self.stats_frame.set_pos(self.engine.width//2-self.stats_frame.get_width()//2, self.engine.height//2-self.stats_frame.get_height()//2)
 
