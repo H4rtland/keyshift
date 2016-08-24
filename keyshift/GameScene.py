@@ -6,21 +6,24 @@ Created on 17/08/2016
 
 import math
 import random
-import pygame
 import time
 import inspect
 
+import pygame
+
 import keyshift.modes
+from keyshift.modes import *
+
 
 from keyshift.Scene import Scene
 from keyshift.Frame import Frame
 from keyshift.Text import Text
-from keyshift.Image import Image
+# from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.Blip import Blip
 from keyshift.HeartDisplay import HeartDisplay
+# from keyshift.modes.Sine import Sine
 from keyshift.modes.Mode import Mode
-from keyshift.modes.Break import Break
 
 
 class GameScene(Scene):
@@ -34,7 +37,7 @@ class GameScene(Scene):
         self.time_to_next_blip = 1000
         self.max_time_to_next_blip = 3000
 
-        key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
+        key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\\ZXCVBNM,./")
 
         self.keys = {}
         self.last_5_presses = [0, 0, 0, 0, 0]
@@ -50,9 +53,9 @@ class GameScene(Scene):
                 key.set_key(label)
                 self.keys[label] = key
 
-
-
-        self.kb_frame.set_pos(self.engine.width//2 - self.kb_frame.get_width()//2, self.engine.height//2 - self.kb_frame.get_height()//2)
+        x = self.engine.width//2 - self.kb_frame.get_width()//2
+        y = self.engine.height//2 - self.kb_frame.get_height()//2
+        self.kb_frame.set_pos(x, y)
 
         self.score = 0
         self.shifting = False
@@ -63,10 +66,9 @@ class GameScene(Scene):
 
         self.score_text = Text(self)
         self.score_text.set_text("Score: 0")
-        self.score_text.set_pos(self.engine.width//2-self.score_text.get_width()//2, interface_pos_y) # self.engine.height//3
+        self.score_text.set_pos(self.engine.width//2-self.score_text.get_width()//2, interface_pos_y)
+        # self.engine.height//3 originally
         self.add(self.score_text)
-
-
 
         self.imminent_text = Text(self)
         self.imminent_text.set_text("KEYSHIFT IMMINENT", size=64)
@@ -80,14 +82,13 @@ class GameScene(Scene):
         self.hearts.hide()
         self.add(self.hearts)
 
-
         self.mode = Mode()
         self.modes = []
         for mode in keyshift.modes.__dict__.values():
             if inspect.ismodule(mode):
                 for c in mode.__dict__.values():
                     if inspect.isclass(c):
-                        if not c is Mode and issubclass(c, Mode):
+                        if c is not Mode and issubclass(c, Mode):
                             self.modes.append(c)
 
         if __debug__:
@@ -100,6 +101,33 @@ class GameScene(Scene):
             self.current_command_text.set_text("> ")
             self.current_command_text.hide()
             self.add(self.current_command_text)
+
+
+        r = random.randint
+        w = self.engine.width
+        h = self.engine.height
+        possible_spawns = [(r(0, w), 0),
+                           (r(0, w), h),
+                           (0, r(0, h)),
+                           (w, r(0, h))]
+        spawn_pos = random.choice(possible_spawns)
+        aiming_for = (r(w//2-50, w//2+50), r(h//2-50, h//2+50))
+
+        """self.b1 = Blip(self)
+        self.b1.set_pos(*spawn_pos)
+        self.b1.angle = math.atan2(aiming_for[0]-spawn_pos[0], aiming_for[1]-spawn_pos[1])
+        self.b1.spawn_pos = spawn_pos
+        self.b1.target_pos = aiming_for
+        self.add(self.b1)
+
+        self.b2 = Blip(self)
+        self.b2.set_pos(*spawn_pos)
+        self.b2.angle = math.atan2(aiming_for[0]-spawn_pos[0], aiming_for[1]-spawn_pos[1])
+        self.b2.spawn_pos = spawn_pos
+        self.b2.target_pos = aiming_for
+        self.add(self.b2)
+        self.b2.set_blank(4, 4, (255, 0, 0))"""
+
 
     def key_press(self, key, unicode):
         if key == pygame.K_ESCAPE:
@@ -156,7 +184,7 @@ class GameScene(Scene):
                     if key.key.rect.contains(blip.rect):
                         self.mode.press(self, key)
                         self.remove(blip)
-                        self.blips = [b for b in self.blips if not b is blip]
+                        self.blips = [b for b in self.blips if b is not blip]
                         self.score += 1
                         self.score_up()
                         break
@@ -165,13 +193,15 @@ class GameScene(Scene):
         if __debug__:
             if self.doing_command:
                 return
+        #Mode.tick_blip(self.b1, time_passed)
+        #Sine.tick_blip(self.b2, time_passed)
         for key in self.keys:
             self.keys[key].tick(time_passed)
         if self.shifting:
             if len(self.keys_to_remove) > 0:
                 key = random.choice(self.keys_to_remove)
                 key.label.set_text("")
-                self.keys_to_remove = [k for k in self.keys_to_remove if not k is key]
+                self.keys_to_remove = [k for k in self.keys_to_remove if k is not key]
             else:
                 labels = list(self.keys.keys())
                 keys = list(self.keys.values())
@@ -181,7 +211,9 @@ class GameScene(Scene):
                 for label in self.keys:
                     self.keys[label].label.set_text(label)
                 self.shifting = False
-                self.imminent_text.set_text("MODE: {}".format(self.mode.name))
+                if not self.mode.__class__ is Mode:
+                    self.imminent_text.set_text("MODE: {}".format(self.mode.name))
+                print("Starting mode. ", self.mode, self.mode.name)
         else:
             self.time_to_next_blip -= time_passed
             if self.time_to_next_blip <= 0:
@@ -190,14 +222,16 @@ class GameScene(Scene):
                 r = random.randint
                 w = self.engine.width
                 h = self.engine.height
-                possible = [(r(0, w), 0),
-                            (r(0, w), h),
-                            (0, r(0, h)),
-                            (w, r(0, h))]
-                pos = random.choice(possible)
-                blip.set_pos(*pos)
+                possible_spawns = [(r(0, w), 0),
+                                   (r(0, w), h),
+                                   (0, r(0, h)),
+                                   (w, r(0, h))]
+                spawn_pos = random.choice(possible_spawns)
+                blip.set_pos(*spawn_pos)
                 aiming_for = (r(w//2-50, w//2+50), r(h//2-50, h//2+50))
-                blip.angle = math.atan2(aiming_for[0]-pos[0], aiming_for[1]-pos[1])
+                blip.angle = math.atan2(aiming_for[0]-spawn_pos[0], aiming_for[1]-spawn_pos[1])
+                blip.spawn_pos = spawn_pos
+                blip.target_pos = aiming_for
                 self.add(blip)
                 self.blips.append(blip)
                 if self.score < 15:
@@ -205,14 +239,18 @@ class GameScene(Scene):
 
             to_remove = []
             for blip in self.blips:
-                blip.tick(time_passed)
-                if blip.x+blip.get_width() < 0 or blip.x > self.engine.width or blip.y+blip.get_height() < 0 or blip.y > self.engine.height:
-                        self.remove(blip)
-                        to_remove.append(blip)
-                        if self.score >= 15:
-                            self.lives -= blip.life_cost
+                self.mode.tick_blip(blip, time_passed)
+                if blip.life < 100:
+                    continue
+                x_out = blip.x+blip.get_width() < 0 or blip.x > self.engine.width
+                y_out = blip.y+blip.get_height() < 0 or blip.y > self.engine.height
+                if x_out or y_out:
+                    self.remove(blip)
+                    to_remove.append(blip)
+                    if self.score >= 15:
+                        self.lives -= blip.life_cost
 
-            self.blips = [blip for blip in self.blips if not blip in to_remove]
+            self.blips = [blip for blip in self.blips if blip not in to_remove]
 
             self.hearts.set_hearts(self.lives)
 
@@ -237,10 +275,9 @@ class GameScene(Scene):
             self.lives = 5
             self.mode.end(self)
             if self.score >= 30:
-                self.mode = random.choice(self.modes)
-                #self.imminent_text.set_text("MODE: {}".format(self.mode.name))
+                self.mode = random.choice([mode for mode in self.modes if not mode.__class__ is self.mode.__class__])
+                # self.imminent_text.set_text("MODE: {}".format(self.mode.name))
                 self.mode.start(self)
-
 
         if self.score >= 15:
             self.hearts.show()

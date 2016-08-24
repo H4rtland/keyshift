@@ -37,7 +37,7 @@ class Keyshift:
 
     def mainloop(self):
         while self.running:
-            time_passed = self.clock.tick_busy_loop(60)
+            time_passed = self.clock.tick_busy_loop(120)
             self.tick(time_passed)
         pygame.mixer.music.stop()
         pygame.mixer.quit()
