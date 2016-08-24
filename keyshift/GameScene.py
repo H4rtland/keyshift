@@ -213,6 +213,8 @@ class GameScene(Scene):
                 self.shifting = False
                 if not self.mode.__class__ is Mode:
                     self.imminent_text.set_text("MODE: {}".format(self.mode.name))
+                else:
+                    self.imminent_text.set_text("")
                 print("Starting mode. ", self.mode, self.mode.name)
         else:
             self.time_to_next_blip -= time_passed
@@ -275,7 +277,7 @@ class GameScene(Scene):
             self.lives = 5
             self.mode.end(self)
             if self.score >= 30:
-                self.mode = random.choice([mode for mode in self.modes if not mode.__class__ is self.mode.__class__])
+                self.mode = random.choice([mode for mode in self.modes if not (mode is self.mode.__class__)])
                 # self.imminent_text.set_text("MODE: {}".format(self.mode.name))
                 self.mode.start(self)
 

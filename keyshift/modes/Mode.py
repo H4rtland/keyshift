@@ -27,6 +27,10 @@ class Mode:
         pass
 
     @staticmethod
+    def init_blip(blip):
+        pass
+
+    @staticmethod
     def tick_blip(blip, time_passed):
         blip.life += time_passed
         x = blip.x + time_passed*blip.speed*math.sin(blip.angle)
