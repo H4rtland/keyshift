@@ -18,6 +18,8 @@ from keyshift.Key import Key
 from keyshift.GameScene import GameScene
 from keyshift.Audio import Audio
 from keyshift.Resources import Resources
+from keyshift.Keyboard import Keyboard
+from keyshift.Layouts import layouts
 
 class MainMenuScene(Scene):
     def __init__(self, engine):
@@ -42,7 +44,7 @@ class MainMenuScene(Scene):
 
 
         key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
-        self.keys = {}
+        """self.keys = {}
         self.kb_frame = Frame(self)
         widths = [12, 12, 12, 11]
         offsets = [0, 25, 37, 12]
@@ -54,15 +56,18 @@ class MainMenuScene(Scene):
                 #key.set_key(label)
                 self.keys[label] = key
 
-        self.start_key = random.choice(list(self.keys.keys()))
-        sk = self.keys[self.start_key]
+        self.start_key = random.choice(list(self.keys.keys()))"""
+        self.keyboard = Keyboard(self)
+        self.keyboard.set_layout(layouts["iso_105"])
+        self.start_key = random.choice(list(self.keyboard.keys.keys()))
+        sk = self.keyboard.keys[self.start_key]
 
-        self.start_text = Text(self.kb_frame)
+        self.start_text = Text(self.keyboard)
         self.start_text.set_text("START", size=16)
         self.start_text.set_pos(sk.x+24-self.start_text.get_width()//2, sk.y+24-self.start_text.get_height()//2)
         self.add(self.start_text)
 
-        self.kb_frame.set_pos(self.engine.width//2 - self.kb_frame.get_width()//2, self.engine.height//2 - self.kb_frame.get_height()//2)
+        self.keyboard.set_pos(self.engine.width//2 - self.keyboard.get_width()//2, self.engine.height//2 - self.keyboard.get_height()//2)
 
 
 
@@ -85,7 +90,7 @@ class MainMenuScene(Scene):
         #            if math.atan2((x-50), (y-50)) < math.pi/2:
         #                self.a.image.set_at((x, y), (255, 255, 255))
 
-        self.spacebar_frame = Frame(self.kb_frame)
+        self.spacebar_frame = Frame(self.keyboard)
         self.spacebar = Image(self.spacebar_frame)
         self.spacebar.set_blank(288, 47)
         key_image = Resources.load_image("key")
@@ -105,15 +110,15 @@ class MainMenuScene(Scene):
 
     def tick(self, time_passed):
         self.tick_title(time_passed)
-        for key in self.keys:
-            self.keys[key].tick(time_passed)
+        for key in self.keyboard.keys:
+            self.keyboard.keys[key].tick(time_passed)
         self.fps.set_text("{0:.02f}".format(self.engine.clock.get_fps()))
 
 
     def tick_end(self, time_passed):
         self.tick_title(time_passed)
-        for key in self.keys:
-            self.keys[key].tick(time_passed)
+        for key in self.keyboard.keys:
+            self.keyboard.keys[key].tick(time_passed)
         if len(self.sprites) == 0:
             self.wait_for_end -= time_passed
             if self.wait_for_end <= 0:
@@ -124,11 +129,11 @@ class MainMenuScene(Scene):
 
     def key_press(self, key, unicode):
         unicode = unicode.upper()
-        if unicode in self.keys:
+        if unicode in self.keyboard.keys:
             if unicode == self.start_key:
                 #from keyshift.EndScene import EndScene
                 self.engine.set_scene(GameScene)
-            self.keys[unicode].press()
+            self.keyboard.keys[unicode].press()
 
         if key == pygame.K_ESCAPE:
             self.engine.running = False
