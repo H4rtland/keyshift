@@ -4,6 +4,8 @@ Created on 17/08/2016
 @author: George
 '''
 
+import math
+
 class Frame:
     def __init__(self, parent):
         self.parent = parent
@@ -68,3 +70,11 @@ class Frame:
 
     def is_showing(self):
         return self.showing and self.parent.is_showing()
+
+    def shift_left(self):
+        min_x = float("inf")
+        for child in self.sprites:
+            min_x = min(min_x, child._x)
+        for child in self.sprites:
+            child._x -= min_x
+        self.recalculate_rect()
