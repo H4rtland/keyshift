@@ -4,8 +4,11 @@ Created on 16/08/2016
 @author: George
 '''
 
-import pygame
 import sys
+import os
+import configparser
+
+import pygame
 
 from keyshift.MainMenuScene import MainMenuScene
 
@@ -13,6 +16,19 @@ class Keyshift:
     def __init__(self):
         pygame.mixer.pre_init(frequency=4000)
         pygame.init()
+
+        if not os.path.exists("keyshift.cfg"):
+            config = configparser.ConfigParser()
+            config["screen"] = {
+                "window_width":pygame.display.Info().current_w,
+                "height":pygame.display.Info().current_h,
+                "window_fullscreen":True,
+            }
+            config["layout"] = {
+                "key_layout":"iso_105",
+            }
+            with open("keyshift.ini", "w") as configfile:
+                config.write(configfile)
 
         pygame.mouse.set_visible(False)
 
