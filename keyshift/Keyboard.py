@@ -13,6 +13,8 @@ class Keyboard(Frame):
         self.keys = {}
 
     def set_layout(self, layout):
+        for child in self.sprites:
+            child.remove()
         for row, (offset, labels) in enumerate(layout):
             for i, label in enumerate(labels):
                 key = Key(self)

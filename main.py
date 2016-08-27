@@ -49,7 +49,8 @@ class Keyshift:
                 self.running = False
                 return
             if event.type == pygame.KEYDOWN:
-                #print(event.scancode, event.key, event.unicode)
+                print(event.scancode, event.key, event.unicode)
+
                 self.scene.key_press(event.key, event.unicode)
 
         self.scene.sprites.clear(self.screen, self.background)

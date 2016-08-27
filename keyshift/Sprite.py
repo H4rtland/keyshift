@@ -72,3 +72,6 @@ class Sprite(pygame.sprite.DirtySprite):
 
     def is_showing(self):
         return self.showing and self.parent.is_showing()
+
+    def remove(self):
+        self.get_scene().remove(self)

@@ -20,6 +20,7 @@ from keyshift.Audio import Audio
 from keyshift.Resources import Resources
 from keyshift.Keyboard import Keyboard
 from keyshift.Layouts import layouts
+from keyshift.KeyboardLayoutScene import KeyboardLayoutScene
 
 class MainMenuScene(Scene):
     def __init__(self, engine):
@@ -43,22 +44,8 @@ class MainMenuScene(Scene):
         self.fps.set_pos(1, 1)
 
 
-        key_order = list("1234567890-=QWERTYUIOP[]ASDFGHJKL;'#\ZXCVBNM,./")
-        """self.keys = {}
-        self.kb_frame = Frame(self)
-        widths = [12, 12, 12, 11]
-        offsets = [0, 25, 37, 12]
-        for j in range(0, 4):
-            for i in range(0, widths[j]):
-                key = Key(self.kb_frame)
-                key.set_pos(offsets[j]+50*i, 50*j)
-                label = key_order.pop(0)
-                #key.set_key(label)
-                self.keys[label] = key
-
-        self.start_key = random.choice(list(self.keys.keys()))"""
         self.keyboard = Keyboard(self)
-        self.keyboard.set_layout(layouts["iso_105"])
+        self.keyboard.set_layout(layouts["ansi_104_bae"])
         self.start_key = random.choice(list(self.keyboard.keys.keys()))
         sk = self.keyboard.keys[self.start_key]
 
@@ -137,6 +124,9 @@ class MainMenuScene(Scene):
 
         if key == pygame.K_ESCAPE:
             self.engine.running = False
+
+        if key == pygame.K_SPACE:
+            self.engine.set_scene(KeyboardLayoutScene)
 
 
     def next_title(self, current):

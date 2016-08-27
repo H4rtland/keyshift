@@ -78,3 +78,7 @@ class Frame:
         for child in self.sprites:
             child._x -= min_x
         self.recalculate_rect()
+
+    def remove(self):
+        for sprite in self.sprites:
+            sprite.remove()
