@@ -17,12 +17,12 @@ class Keyshift:
         pygame.mixer.pre_init(frequency=4000)
         pygame.init()
 
-        if not os.path.exists("keyshift.cfg"):
+        if not os.path.exists("keyshift.ini"):
             config = configparser.ConfigParser()
             config["screen"] = {
                 "window_width":pygame.display.Info().current_w,
-                "height":pygame.display.Info().current_h,
-                "window_fullscreen":True,
+                "window_height":pygame.display.Info().current_h,
+                "fullscreen":True,
             }
             config["layout"] = {
                 "key_layout":"iso_105",
@@ -30,13 +30,17 @@ class Keyshift:
             with open("keyshift.ini", "w") as configfile:
                 config.write(configfile)
 
+        self.config = configparser.ConfigParser()
+        self.config.read("keyshift.ini")
+
+
         pygame.mouse.set_visible(False)
 
         self.running = True
         self.clock = pygame.time.Clock()
 
-        self.width = 1280
-        self.height = 720
+        self.width = int(self.config["screen"]["window_width"])
+        self.height = int(self.config["screen"]["window_height"])
         self.screen = pygame.display.set_mode((self.width, self.height))#, pygame.FULLSCREEN)
         pygame.display.set_caption("KEYSHIFT")
 
@@ -65,8 +69,7 @@ class Keyshift:
                 self.running = False
                 return
             if event.type == pygame.KEYDOWN:
-                print(event.scancode, event.key, event.unicode)
-
+                #print(event.scancode, event.key, event.unicode)
                 self.scene.key_press(event.key, event.unicode)
 
         self.scene.sprites.clear(self.screen, self.background)
