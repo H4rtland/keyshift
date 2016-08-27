@@ -69,8 +69,11 @@ class Keyshift:
                 self.running = False
                 return
             if event.type == pygame.KEYDOWN:
-                #print(event.scancode, event.key, event.unicode)
-                self.scene.key_press(event.key, event.unicode)
+                print(event.scancode, event.key, event.unicode)
+                unicode = event.unicode
+                if event.key == 91 and event.unicode == "":
+                    unicode = "¨"
+                self.scene.key_press(event.key, unicode)
 
         self.scene.sprites.clear(self.screen, self.background)
         self.scene.do_tick(time_passed)

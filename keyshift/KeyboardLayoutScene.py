@@ -57,6 +57,16 @@ class KeyboardLayoutScene(Scene):
                 self.chosen_layout -= 1
                 self.update_selected()
 
+        unicode = unicode.upper()
+        if unicode in self.layout_keyboard.keys.keys():
+            key = self.layout_keyboard.keys[unicode]
+            if key.is_showing():
+                key.press()
+
+    def tick(self, time_passed):
+        for key in self.layout_keyboard.keys:
+            self.layout_keyboard.keys[key].tick(time_passed)
+
     def update_selected(self):
         pre = "  < " if self.chosen_layout > 0 else "    "
         post = " >" if self.chosen_layout < len(self.available_layouts)-1 else "  "
