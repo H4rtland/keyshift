@@ -19,3 +19,7 @@ names = {
     "iso_105":"ISO 105",
     "AZERTY":"AZERTY",
 }
+
+warning_message = {
+    "AZERTY":"REQUIRES CAPSLOCK",
+}

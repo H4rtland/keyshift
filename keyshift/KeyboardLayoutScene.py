@@ -10,7 +10,7 @@ from keyshift.Scene import Scene
 from keyshift.Frame import Frame
 from keyshift.Text import Text
 from keyshift.Keyboard import Keyboard
-from keyshift.Layouts import layouts, names, order
+from keyshift.Layouts import layouts, names, order, warning_message
 
 class KeyboardLayoutScene(Scene):
     def __init__(self, engine):
@@ -37,6 +37,12 @@ class KeyboardLayoutScene(Scene):
 
         self.layout_keyboard = Keyboard(self.settings_frame)
         self.layout_keyboard.set_pos(275, 0)
+
+        self.warning_message = Text(self.settings_frame)
+        self.warning_message.size = 64
+        self.warning_message.set_pos(lambda: self.layout_keyboard._x+self.layout_keyboard.get_width()//2-self.warning_message.get_width()//2,
+                                     lambda: self.layout_keyboard._y+self.layout_keyboard.get_height()+10)
+        self.add(self.warning_message)
 
         self.update_selected()
 
@@ -68,7 +74,12 @@ class KeyboardLayoutScene(Scene):
             self.layout_keyboard.keys[key].tick(time_passed)
 
     def update_selected(self):
+        layout_identifier = self.available_layouts[self.chosen_layout]
         pre = "  < " if self.chosen_layout > 0 else "    "
         post = " >" if self.chosen_layout < len(self.available_layouts)-1 else "  "
-        self.key_layout_select.set_text(pre + names[self.available_layouts[self.chosen_layout]] + post)
-        self.layout_keyboard.set_layout(layouts[self.available_layouts[self.chosen_layout]])
+        self.key_layout_select.set_text(pre + names[layout_identifier] + post)
+        self.layout_keyboard.set_layout(layouts[layout_identifier])
+        if layout_identifier in warning_message:
+            self.warning_message.set_text(warning_message[layout_identifier])
+        else:
+            self.warning_message.set_text("")

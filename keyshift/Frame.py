@@ -28,14 +28,20 @@ class Frame:
     def get_width(self):
         w = 0
         for sprite in self.sprites:
-            w = max(w, sprite._x + sprite.get_width())
+            x = sprite._x
+            if callable(x):
+                x = x()
+            w = max(w, x + sprite.get_width())
         return w
 
     def get_height(self):
-        w = 0
+        h = 0
         for sprite in self.sprites:
-            w = max(w, sprite._y + sprite.get_height())
-        return w
+            y = sprite._y
+            if callable(y):
+                y = y()
+            h = max(h, y + sprite.get_height())
+        return h
 
     @property
     def x(self):
