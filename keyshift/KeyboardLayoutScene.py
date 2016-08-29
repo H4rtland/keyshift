@@ -24,7 +24,7 @@ class KeyboardLayoutScene(Scene):
         self.add(key_layout_label)
 
         self.available_layouts = order
-        self.chosen_layout = 0
+        self.chosen_layout = self.available_layouts.index(self.engine.config["layout"]["key_layout"])
 
         self.key_layout_select = Text(self.settings_frame)
         self.key_layout_select.set_pos(0, 20)
@@ -83,3 +83,10 @@ class KeyboardLayoutScene(Scene):
             self.warning_message.set_text(warning_message[layout_identifier])
         else:
             self.warning_message.set_text("")
+
+    def tick_end(self, time_passed):
+        layout_identifier = self.available_layouts[self.chosen_layout]
+        self.engine.config["layout"]["key_layout"] = layout_identifier
+        with open("keyshift.ini", "w") as configfile:
+            self.engine.config.write(configfile)
+        return True

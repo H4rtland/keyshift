@@ -45,7 +45,7 @@ class MainMenuScene(Scene):
 
 
         self.keyboard = Keyboard(self)
-        self.keyboard.set_layout(layouts["ansi_104_bae"])
+        self.keyboard.set_layout(layouts[self.engine.config["layout"]["key_layout"]], no_label=True)
         self.start_key = random.choice(list(self.keyboard.keys.keys()))
         sk = self.keyboard.keys[self.start_key]
 
@@ -67,15 +67,6 @@ class MainMenuScene(Scene):
         self.a.set_pos(300, 0)
         #self.add(self.a)
         self.steps = 0
-        #for i in range(0, 45):
-        #    pygame.draw.arc(a.image, (255, 255, 255), (25-i, 25-i, 50-i, 50-i), 0, math.pi/2, 2)
-        #for i in range(0, 90*100):
-        #    pygame.draw.line(a.image, (255, 255, 255), (50, 50), (50+40*math.cos(math.pi*i/180/100), 50+40*math.sin(math.pi*i/180/100)))
-        #for x in range(0, 100):
-        #    for y in range(0, 100):
-        #        if (x-50)**2 + (y-50)**2 < 40**2:
-        #            if math.atan2((x-50), (y-50)) < math.pi/2:
-        #                self.a.image.set_at((x, y), (255, 255, 255))
 
         self.spacebar_frame = Frame(self.keyboard)
         self.spacebar = Image(self.spacebar_frame)

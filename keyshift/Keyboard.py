@@ -12,13 +12,14 @@ class Keyboard(Frame):
         super().__init__(parent)
         self.keys = {}
 
-    def set_layout(self, layout):
+    def set_layout(self, layout, no_label=False):
         for child in self.sprites:
             child.remove()
         for row, (offset, labels) in enumerate(layout):
             for i, label in enumerate(labels):
                 key = Key(self)
-                key.set_key(label)
+                if not no_label:
+                    key.set_key(label)
                 key.set_pos(offset*50+i*50, row*50)
                 #self.get_scene().add(key)
                 self.keys[label] = key
