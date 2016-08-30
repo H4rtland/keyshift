@@ -39,9 +39,13 @@ class Keyshift:
         self.running = True
         self.clock = pygame.time.Clock()
 
+        flags = 0
+        if self.config.getboolean("screen", "fullscreen"):
+            flags = pygame.FULLSCREEN
+
         self.width = int(self.config["screen"]["window_width"])
         self.height = int(self.config["screen"]["window_height"])
-        self.screen = pygame.display.set_mode((self.width, self.height))#, pygame.FULLSCREEN)
+        self.screen = pygame.display.set_mode((self.width, self.height), flags)
         pygame.display.set_caption("KEYSHIFT")
 
         self.background = pygame.Surface(self.screen.get_size())

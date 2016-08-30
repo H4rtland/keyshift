@@ -13,5 +13,5 @@ class Audio:
         if Audio.current_music == name:
             return
         pygame.mixer.music.load(name)
-        #pygame.mixer.music.play(-1)
+        pygame.mixer.music.play(-1)
         Audio.current_music = name
