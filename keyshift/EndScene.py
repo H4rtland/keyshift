@@ -30,13 +30,13 @@ class EndScene(Scene):
         stats = []
         stat_texts = []
 
-        stat_texts.append("SCORE: {}".format(score))
+        stats.append("SCORE: {}".format(score))
 
         minutes, seconds = divmod(time, 60)
-        stat_texts.append("TIME: {}m {}s".format(minutes, seconds))
+        stats.append("TIME: {}m {}s".format(minutes, seconds))
 
         if not killer is "":
-            stat_texts.append("KILLER: {}".format(killer))
+            stats.append("KILLER: {}".format(killer))
 
         for i, stat in enumerate(stats):
             text = Text(self.stats_frame)
