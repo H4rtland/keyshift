@@ -50,7 +50,7 @@ class MainMenuScene(Scene):
         sk = self.keyboard.keys[self.start_key]
 
         self.start_text = Text(self.keyboard)
-        self.start_text.set_text("START", size=16)
+        self.start_text.set_text("START", size=32)
         self.start_text.set_pos(sk.x+24-self.start_text.get_width()//2, sk.y+24-self.start_text.get_height()//2)
         self.add(self.start_text)
 
@@ -80,7 +80,7 @@ class MainMenuScene(Scene):
         self.add(self.spacebar)
 
         self.spacebar_text = Text(self.spacebar_frame)
-        self.spacebar_text.set_text("CHANGE KEYBOARD LAYOUT", size=16)
+        self.spacebar_text.set_text("CHANGE KEYBOARD LAYOUT", size=32)
         self.spacebar_text.set_pos(288//2-self.spacebar_text.get_width()//2, 47//2-self.spacebar_text.get_height()//2)
         self.add(self.spacebar_text)
 

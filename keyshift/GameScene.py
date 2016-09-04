@@ -18,7 +18,7 @@ from keyshift.modes import *
 from keyshift.Scene import Scene
 from keyshift.Frame import Frame
 from keyshift.Text import Text
-# from keyshift.Image import Image
+from keyshift.Image import Image
 from keyshift.Key import Key
 from keyshift.Blip import Blip
 from keyshift.HeartDisplay import HeartDisplay
@@ -128,6 +128,29 @@ class GameScene(Scene):
         self.add(self.b2)
         self.b2.set_blank(4, 4, (255, 0, 0))"""
 
+        self.border_frame = Frame(self)
+        self.border_top = Image(self.border_frame)
+        self.border_top.set_blank(1366, 1, (255, 255, 255))
+
+        self.border_bottom = Image(self.border_frame)
+        self.border_bottom.set_blank(1366, 1, (255, 255, 255))
+        self.border_bottom.set_pos(0, 768)
+
+        self.border_left = Image(self.border_frame)
+        self.border_left.set_blank(1, 768, (255, 255, 255))
+
+        self.border_right = Image(self.border_frame)
+        self.border_right.set_blank(1, 768, (255, 255, 255))
+        self.border_right.set_pos(1366, 0)
+
+        self.add(self.border_top)
+        self.add(self.border_bottom)
+        self.add(self.border_left)
+        self.add(self.border_right)
+
+        self.border_frame.set_pos(self.engine.width//2-self.border_frame.get_width()//2,
+                                  self.engine.height//2-self.border_frame.get_height()//2)
+
 
     def key_press(self, key, unicode):
         if key == pygame.K_ESCAPE:
@@ -224,10 +247,14 @@ class GameScene(Scene):
                 r = random.randint
                 w = self.engine.width
                 h = self.engine.height
-                possible_spawns = [(r(0, w), 0),
-                                   (r(0, w), h),
-                                   (0, r(0, h)),
-                                   (w, r(0, h))]
+                ax = (self.engine.width-1366)
+                ay = (self.engine.height-768)
+                bx = (self.engine.width-1366)/2
+                by = (self.engine.height-768)/2
+                possible_spawns = [(r(0, w-ax)+bx, 0+by),
+                                   (r(0, w-ax)+bx, h-by),
+                                   (0+bx, r(0, h-ay)),
+                                   (w-bx, r(0, h-ay))]
                 spawn_pos = random.choice(possible_spawns)
                 blip.set_pos(*spawn_pos)
                 aiming_for = (r(w//2-50, w//2+50), r(h//2-50, h//2+50))
@@ -244,8 +271,11 @@ class GameScene(Scene):
                 self.mode.tick_blip(blip, time_passed)
                 if blip.life < 100:
                     continue
-                x_out = blip.x+blip.get_width() < 0 or blip.x > self.engine.width
-                y_out = blip.y+blip.get_height() < 0 or blip.y > self.engine.height
+
+                bx = (self.engine.width-1366)/2
+                by = (self.engine.height-768)/2
+                x_out = blip.x < bx or blip.x > self.engine.width-bx
+                y_out = blip.y < by or blip.y > self.engine.height-by
                 if x_out or y_out:
                     self.remove(blip)
                     to_remove.append(blip)
