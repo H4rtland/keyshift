@@ -308,7 +308,7 @@ class GameScene(Scene):
             self.lives = 5
             self.mode.end(self)
             if self.score >= 30:
-                self.mode = random.choice([mode for mode in self.modes if not (mode is self.mode.__class__)])
+                self.mode = random.choice([mode for mode in self.modes if not (mode is self.mode)])
                 # self.imminent_text.set_text("MODE: {}".format(self.mode.name))
                 self.mode.start(self)
 
