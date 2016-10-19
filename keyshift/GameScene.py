@@ -53,8 +53,8 @@ class GameScene(Scene):
                 key.set_key(label)
                 self.keys[label] = key
 
-        x = self.engine.width//2 - self.kb_frame.get_width()//2
-        y = self.engine.height//2 - self.kb_frame.get_height()//2
+        x = self.engine.width//2 - self.kb_frame.width//2
+        y = self.engine.height//2 - self.kb_frame.height//2
         self.kb_frame.set_pos(x, y)
 
         self.score = 0
@@ -97,7 +97,7 @@ class GameScene(Scene):
             self.current_command = ""
             self.current_command_text = Text(self)
             self.current_command_text.set_text("HI")
-            self.current_command_text.set_pos(5, self.engine.height-5-self.current_command_text.get_height())
+            self.current_command_text.set_pos(5, self.engine.height-5-self.current_command_text.height)
             self.current_command_text.set_text("> ")
             self.current_command_text.hide()
             self.add(self.current_command_text)
@@ -148,8 +148,8 @@ class GameScene(Scene):
         self.add(self.border_left)
         self.add(self.border_right)
 
-        self.border_frame.set_pos(self.engine.width//2-self.border_frame.get_width()//2,
-                                  self.engine.height//2-self.border_frame.get_height()//2)
+        self.border_frame.set_pos(self.engine.width//2-self.border_frame.width//2,
+                                  self.engine.height//2-self.border_frame.height//2)
 
 
     def key_press(self, key, unicode):
@@ -269,7 +269,7 @@ class GameScene(Scene):
             to_remove = []
             for blip in self.blips:
                 self.mode.tick_blip(blip, time_passed)
-                if blip.life < 300:
+                if blip.life < 100:
                     continue
 
                 bx = (self.engine.width-1366)/2

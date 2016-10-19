@@ -45,9 +45,9 @@ class EndScene(Scene):
             stat_texts.append(text)
 
         for i, stat_text in enumerate(stat_texts):
-            stat_text.set_pos((self.stats_frame.get_width()-stat_text.get_width())//2, i*25)
+            stat_text.set_pos((self.stats_frame.width-stat_text.get_width())//2, i*25)
 
-        self.stats_frame.set_pos(self.engine.width//2-self.stats_frame.get_width()//2, self.engine.height//2-self.stats_frame.get_height()//2)
+        self.stats_frame.set_pos(self.engine.width//2-self.stats_frame.width//2, self.engine.height//2-self.stats_frame.height//2)
 
 
     def key_press(self, key, unicode):

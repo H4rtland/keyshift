@@ -31,10 +31,12 @@ class Sprite(pygame.sprite.DirtySprite):
         self.visible = self.is_showing()
         self.dirty = 1
 
-    def get_width(self):
+    @property
+    def width(self):
         return self.image.get_width()
 
-    def get_height(self):
+    @property
+    def height(self):
         return self.image.get_height()
 
     @property
