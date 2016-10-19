@@ -50,7 +50,7 @@ class MainMenuScene(Scene):
         sk = self.keyboard.keys[self.start_key]
 
         self.start_text = Text(self.keyboard)
-        self.start_text.set_text("START", size=32)
+        self.start_text.set_text("START", size=24)
         self.start_text.set_pos(sk.x+24-self.start_text.get_width()//2, sk.y+24-self.start_text.get_height()//2)
         self.add(self.start_text)
 

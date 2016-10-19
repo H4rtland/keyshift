@@ -251,10 +251,10 @@ class GameScene(Scene):
                 ay = (self.engine.height-768)
                 bx = (self.engine.width-1366)/2
                 by = (self.engine.height-768)/2
-                possible_spawns = [(r(0, w-ax)+bx, 0+by),
-                                   (r(0, w-ax)+bx, h-by),
-                                   (0+bx, r(0, h-ay)),
-                                   (w-bx, r(0, h-ay))]
+                possible_spawns = [(r(bx, w-bx), 0+by),
+                                   (r(bx, w-bx), h-by),
+                                   (0+bx, r(by, h-by)),
+                                   (w-bx, r(by, h-by))]
                 spawn_pos = random.choice(possible_spawns)
                 blip.set_pos(*spawn_pos)
                 aiming_for = (r(w//2-50, w//2+50), r(h//2-50, h//2+50))
@@ -269,7 +269,7 @@ class GameScene(Scene):
             to_remove = []
             for blip in self.blips:
                 self.mode.tick_blip(blip, time_passed)
-                if blip.life < 100:
+                if blip.life < 300:
                     continue
 
                 bx = (self.engine.width-1366)/2
@@ -279,6 +279,7 @@ class GameScene(Scene):
                 if x_out or y_out:
                     self.remove(blip)
                     to_remove.append(blip)
+                    #print("Removing blip with life {}".format(blip.life))
                     if self.score >= 15:
                         self.lives -= blip.life_cost
 
