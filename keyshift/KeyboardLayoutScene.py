@@ -40,7 +40,7 @@ class KeyboardLayoutScene(Scene):
 
         self.warning_message = Text(self.settings_frame)
         self.warning_message.size = 64
-        self.warning_message.set_pos(lambda: self.layout_keyboard._x+self.layout_keyboard.width//2-self.warning_message.get_width()//2,
+        self.warning_message.set_pos(lambda: self.layout_keyboard._x+self.layout_keyboard.width//2-self.warning_message.width//2,
                                      lambda: self.layout_keyboard._y+self.layout_keyboard.height+10)
         self.add(self.warning_message)
 
