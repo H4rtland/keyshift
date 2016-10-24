@@ -5,6 +5,7 @@ Created on 22/08/2016
 '''
 
 import math
+import random
 
 class Mode:
     easy = 0
@@ -41,3 +42,26 @@ class Mode:
         #y += math.cos(self.life/expected_life)
         blip.set_pos(x, y)
         blip.dirty = 1
+
+    @staticmethod
+    def blip_spawn_pos(engine_width, engine_height):
+        r = random.randint
+        w = engine_width
+        h = engine_height
+        ax = (w-1366)
+        ay = (h-768)
+        bx = (w-1366)/2
+        by = (h-768)/2
+        possible_spawns = [(r(bx, w-bx), 0+by),
+                           (r(bx, w-bx), h-by),
+                           (0+bx, r(by, h-by)),
+                           (w-bx, r(by, h-by))]
+        spawn_pos = random.choice(possible_spawns)
+        return spawn_pos
+
+    @staticmethod
+    def blip_aiming_for(engine_width, engine_height):
+        r = random.randint
+        w = engine_width
+        h = engine_height
+        return (r(w//2-50, w//2+50), r(h//2-50, h//2+50))

@@ -244,20 +244,9 @@ class GameScene(Scene):
             if self.time_to_next_blip <= 0:
                 self.time_to_next_blip = self.max_time_to_next_blip
                 blip = Blip(self)
-                r = random.randint
-                w = self.engine.width
-                h = self.engine.height
-                ax = (self.engine.width-1366)
-                ay = (self.engine.height-768)
-                bx = (self.engine.width-1366)/2
-                by = (self.engine.height-768)/2
-                possible_spawns = [(r(bx, w-bx), 0+by),
-                                   (r(bx, w-bx), h-by),
-                                   (0+bx, r(by, h-by)),
-                                   (w-bx, r(by, h-by))]
-                spawn_pos = random.choice(possible_spawns)
+                spawn_pos = self.mode.blip_spawn_pos(self.engine.width, self.engine.height)
                 blip.set_pos(*spawn_pos)
-                aiming_for = (r(w//2-50, w//2+50), r(h//2-50, h//2+50))
+                aiming_for = self.mode.blip_aiming_for(self.engine.width, self.engine.height)
                 blip.angle = math.atan2(aiming_for[0]-spawn_pos[0], aiming_for[1]-spawn_pos[1])
                 blip.spawn_pos = spawn_pos
                 blip.target_pos = aiming_for

@@ -17,6 +17,7 @@ class Keyshift:
         pygame.mixer.pre_init(frequency=4000)
         pygame.init()
 
+        # Check for config file or create with default values
         if not os.path.exists("keyshift.ini"):
             config = configparser.ConfigParser()
             config["screen"] = {
@@ -76,9 +77,12 @@ class Keyshift:
                 #print(event.scancode, event.key, event.unicode, pygame.key.name(event.key))
                 #print(event.dict)
                 #print(dir(event))
+
+                # French keyboards
                 unicode = event.unicode
                 if event.key == 91 and event.unicode == "":
                     unicode = "¨"
+
                 #if event.unicode == "¨" and not event.key == 91:
                 #    unicode = pygame.key.name(event.key)
                 self.scene.key_press(event.key, unicode)
