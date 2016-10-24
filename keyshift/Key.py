@@ -32,6 +32,8 @@ class Key(Frame):
 
         self.press_time = 0
 
+        self.default_position = (0, 0)
+
     def set_key(self, key):
         self.label.set_text(key)
 
@@ -53,3 +55,6 @@ class Key(Frame):
             self.label.set_pos(10, 4)
             self.press_time = 0
             self.label.set_text(self.label.current_text, size=32)
+
+    def reset_position(self):
+        self.set_pos(*self.default_position)

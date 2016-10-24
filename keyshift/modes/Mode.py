@@ -16,7 +16,7 @@ class Mode:
     name = ""
 
     @staticmethod
-    def start(scene):
+    def start(scene, engine_width, engine_height):
         pass
 
     @staticmethod

@@ -49,6 +49,7 @@ class GameScene(Scene):
             for i in range(0, widths[j]):
                 key = Key(self.kb_frame)
                 key.set_pos(offsets[j]+50*i, 50*j)
+                key.default_position = (offsets[j]+50*i, 50*j)
                 label = key_order.pop(0)
                 key.set_key(label)
                 self.keys[label] = key
@@ -299,7 +300,7 @@ class GameScene(Scene):
             if self.score >= 30:
                 self.mode = random.choice([mode for mode in self.modes if not (mode is self.mode)])
                 # self.imminent_text.set_text("MODE: {}".format(self.mode.name))
-                self.mode.start(self)
+                self.mode.start(self, self.engine.width, self.engine.height)
 
         if self.score >= 15:
             self.hearts.show()
