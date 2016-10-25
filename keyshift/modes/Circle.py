@@ -3,19 +3,19 @@ import math
 from keyshift.modes.Mode import Mode
 
 class Circle(Mode):
-    name = "2pi"
+    name = "2PI"
 
     @staticmethod
     def start(scene, engine_width, engine_height):
         total_keys = len(scene.keys)
-        x_offset = engine_width//2 - scene.kb_frame._x
-        y_offset = engine_height//2 - scene.kb_frame._y
-        print(x_offset, y_offset)
+
         for index, key in enumerate(scene.keys.values()):
-            key.set_pos(x_offset+(340*math.sin(2*math.pi*index/total_keys)-key.width//2),
-                        y_offset+(340*math.cos(2*math.pi*index/total_keys))-key.height//2)
+            key.set_pos(340+(340*math.sin(2*math.pi*index/total_keys)),
+                        340+(340*math.cos(2*math.pi*index/total_keys)))
+        scene.kb_frame.recalculate_rect()
 
     @staticmethod
     def end(scene):
         for key in scene.keys.values():
             key.reset_position()
+        scene.kb_frame.recalculate_rect()
