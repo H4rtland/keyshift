@@ -95,6 +95,13 @@ class Keyshift:
 
 
     def set_scene(self, scene, *args):
+        """
+        Set the next scene. Scene will start once the current
+        scene has gone through its ending procedure.
+        :param scene: Next scene class
+        :param args: Args to call next scene class with
+        :return: None
+        """
         if not self.scene is None:
             self.scene.end()
 
@@ -104,6 +111,10 @@ class Keyshift:
             self.next_scene()
 
     def next_scene(self):
+        """
+        Start next scene with args given to set_scene.
+        :return: None
+        """
         self.screen.fill((0, 0, 0))
         self.scene = self.next_scene_class(self, *self.next_scene_args)
         self.scene.start()

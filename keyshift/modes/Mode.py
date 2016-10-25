@@ -8,6 +8,16 @@ import math
 import random
 
 class Mode:
+    """
+    Modes control the gameplay behavior.
+    When a specific mode is chosen by the game,
+    the methods for that mode class are
+    used to control motion of the blips,
+    key press behaviour, etc for the
+    duration of that mode. Also handles
+    set up and tear down of that mode.
+    """
+
     easy = 0
     normal = 1
     hard = 2
@@ -17,34 +27,65 @@ class Mode:
 
     @staticmethod
     def start(scene, engine_width, engine_height):
+        """
+        Called when the mode is initialised.
+        :param scene: Reference to game scene
+        :param engine_width:
+        :param engine_height:
+        :return: None
+        """
         pass
 
     @staticmethod
     def press(scene, key):
+        """
+        Control what happens to a key when it is pressed.
+        :param scene: Reference to game scene
+        :param key: The key frame object
+        :return: None
+        """
         pass
 
     @staticmethod
     def end(scene):
+        """
+        Called when the mode ends.
+        :param scene: Reference to game scene
+        :return: None
+        """
         pass
 
     @staticmethod
     def init_blip(blip):
+        """
+        Called when a blip is created.
+        :param blip: The blip
+        :return: None
+        """
         pass
 
     @staticmethod
     def tick_blip(blip, time_passed):
+        """
+        Control the motion of each blip each frame.
+        :param blip: Blip to move
+        :param time_passed: Time passed in ms since last frame
+        :return: None
+        """
         blip.life += time_passed
         x = blip.x + time_passed*blip.speed*math.sin(blip.angle)
         y = blip.y + time_passed*blip.speed*math.cos(blip.angle)
-        #path_length = math.sqrt((blip.spawn_pos[0]-blip.target_pos[0])**2 + (blip.spawn_pos[1]-self.target_pos[1])**2)
-        #expected_life = path_length/self.speed
-        #x += math.sin(self.life/expected_life)
-        #y += math.cos(self.life/expected_life)
         blip.set_pos(x, y)
         blip.dirty = 1
 
     @staticmethod
     def blip_spawn_pos(engine_width, engine_height):
+        """
+        Choose a spawn position for a new blip.
+        :param engine_width:
+        :param engine_height:
+        :return: Spawn position (x, y)
+        """
         r = random.randint
         w = engine_width
         h = engine_height
@@ -61,6 +102,14 @@ class Mode:
 
     @staticmethod
     def blip_aiming_for(engine_width, engine_height):
+        """
+        Choose a position that a newly created blip is aiming for.
+        Todo: make sure the position is at least within one key
+        to prevent blips sliding in between all keys.
+        :param engine_width:
+        :param engine_height:
+        :return: Target position (x, y)
+        """
         r = random.randint
         w = engine_width
         h = engine_height
