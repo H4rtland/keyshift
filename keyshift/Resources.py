@@ -7,6 +7,7 @@ Created on 16/08/2016
 import pygame
 import zipfile
 import os
+import os.path as op
 import io
 
 class Resources:
@@ -59,3 +60,24 @@ class Resources:
             image = pygame.image.load(io.BytesIO(imageFile))
             image = image.convert_alpha()
             return image
+
+    @staticmethod
+    def load_music(filename):
+        """
+        Load a music file from the resources folder in development mode,
+        or from the resources zip in release mode.
+        :param filename: Music track filename (with ext)
+        :return: BytesIO of file data
+        :raises: IOError if file does not exist
+        """
+        full_path = op.join("resource/music/", filename)
+        if __debug__:
+            if op.exists(full_path):
+                with open(full_path, "rb") as music_file:
+                    return io.BytesIO(music_file.read())
+            raise IOError("{} does not exist in resources music folder".format(filename))
+        else:
+            zip_path = op.join("music/", filename)
+            if zip_path in Resources.archive.namelist():
+                return io.BytesIO(Resources.archive.read(zip_path))
+            raise IOError("{} does not exist in resources zip".format(filename))

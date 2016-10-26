@@ -27,7 +27,7 @@ class MainMenuScene(Scene):
         super().__init__(engine)
 
 
-        Audio.play_music("resource/music/weightless_thoughts.ogg")
+        Audio.play_music("weightless_thoughts.ogg")
 
         self.title_shifts = ["KEYSHIFT"]
         self.title_shift_tick = 16
