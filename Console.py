@@ -10,8 +10,11 @@ import os
 import sys
 import zipimport
 
+
 sys.frozen = True
 sys.path = sys.path[:4]
+
+# This line makes it possible to move .dll and .pyd files into sub folder
 sys.path.append(r"lib")
 
 
