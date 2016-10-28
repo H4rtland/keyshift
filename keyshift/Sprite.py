@@ -1,9 +1,3 @@
-'''
-Created on 16/08/2016
-
-@author: George
-'''
-
 import pygame
 from keyshift.Frame import Frame
 

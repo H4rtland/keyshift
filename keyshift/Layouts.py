@@ -1,9 +1,3 @@
-'''
-Created on 26/08/2016
-
-@author: George
-'''
-
 order = ["iso_105", "ansi_104", "ansi_104_bae", "AZERTY"]
 
 layouts = {

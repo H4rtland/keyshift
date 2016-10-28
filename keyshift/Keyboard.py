@@ -1,9 +1,3 @@
-'''
-Created on 27/08/2016
-
-@author: George
-'''
-
 from keyshift.Frame import Frame
 from keyshift.Key import Key
 

@@ -1,9 +1,3 @@
-'''
-Created on 24/08/2016
-
-@author: George
-'''
-
 import math
 
 from keyshift.modes.Mode import Mode

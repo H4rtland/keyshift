@@ -1,9 +1,3 @@
-'''
-Created on 18/08/2016
-
-@author: George
-'''
-
 import pygame
 
 from keyshift.Resources import Resources

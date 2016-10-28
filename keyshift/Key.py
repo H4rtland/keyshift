@@ -1,11 +1,3 @@
-'''
-Created on 17/08/2016
-
-@author: George
-'''
-
-import pygame
-
 from keyshift.Frame import Frame
 from keyshift.Text import Text
 from keyshift.Image import Image

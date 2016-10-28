@@ -1,9 +1,3 @@
-'''
-Created on 22/08/2016
-
-@author: George
-'''
-
 import math
 import random
 

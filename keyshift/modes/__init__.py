@@ -1,9 +1,3 @@
-'''
-Created on 22/08/2016
-
-@author: George
-'''
-
 from os.path import dirname, basename, isfile
 import glob
 modules = glob.glob(dirname(__file__)+"/*.py")

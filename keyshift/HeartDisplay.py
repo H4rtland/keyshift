@@ -1,9 +1,3 @@
-'''
-Created on 19/08/2016
-
-@author: George
-'''
-
 import pygame
 
 from keyshift.Image import Image

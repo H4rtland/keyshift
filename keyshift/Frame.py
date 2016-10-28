@@ -1,9 +1,3 @@
-'''
-Created on 17/08/2016
-
-@author: George
-'''
-
 import math
 
 class Frame:

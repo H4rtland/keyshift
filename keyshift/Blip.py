@@ -1,9 +1,3 @@
-'''
-Created on 18/08/2016
-
-@author: George
-'''
-
 import math
 
 import pygame

@@ -1,10 +1,3 @@
-'''
-Created on 16/08/2016
-
-@author: George
-'''
-
-import sys
 import os
 import configparser
 
