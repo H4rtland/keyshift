@@ -123,3 +123,9 @@ class Keyshift:
 
 if __name__ == "__main__":
     Keyshift()
+
+class MyClass:
+    def my_function(self, number):
+        print(number+1)
+        self.number = number+2
+        return False
