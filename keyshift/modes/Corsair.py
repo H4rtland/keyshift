@@ -13,6 +13,8 @@ class Corsair(Mode):
     name = "CORSAIR"
     colours = {}
 
+    active = False
+
     @staticmethod
     def start(scene, engine_width, engine_height):
         Corsair.colours = {}
