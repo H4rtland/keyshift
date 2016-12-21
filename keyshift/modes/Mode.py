@@ -19,6 +19,8 @@ class Mode:
 
     name = ""
 
+    active = True
+
     @staticmethod
     def start(scene, engine_width, engine_height):
         """
@@ -33,9 +35,28 @@ class Mode:
     @staticmethod
     def press(scene, key):
         """
-        Control what happens to a key when it is pressed.
+        Control what happens to a key when it is pressed and hits a blip
         :param scene: Reference to game scene
         :param key: The key frame object
+        :return: None
+        """
+        pass
+
+
+    @staticmethod
+    def key_push(key):
+        """
+        Mode specific action when a key is pressed
+        :param key: Key frame object
+        :return: None
+        """
+        pass
+
+    @staticmethod
+    def key_reset(key):
+        """
+        Mode specific action when a key resets to unpressed state
+        :param key: Key frame object
         :return: None
         """
         pass

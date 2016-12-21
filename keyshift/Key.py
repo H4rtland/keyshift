@@ -47,6 +47,8 @@ class Key(Frame):
             self.label.set_pos(10, 4)
             self.press_time = 0
             self.label.set_text(self.label.current_text, size=32)
+            if hasattr(self.get_scene(), "mode"):
+                self.get_scene().mode.key_reset(self)
 
     def reset_position(self):
         self.set_pos(*self.default_position)

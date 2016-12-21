@@ -83,8 +83,9 @@ class GameScene(Scene):
             if inspect.ismodule(mode):
                 for c in mode.__dict__.values():
                     if inspect.isclass(c):
-                        if c is not Mode and issubclass(c, Mode):
-                            self.modes.append(c)
+                        if (not c is Mode) and issubclass(c, Mode):
+                            if c.active:
+                                self.modes.append(c)
 
         if __debug__:
             self.doing_command = False
@@ -198,6 +199,7 @@ class GameScene(Scene):
             key = self.keys[unicode]
             if key.is_showing():
                 key.press()
+                self.mode.key_push(key)
                 for blip in self.blips:
                     if key.key.rect.contains(blip.rect):
                         self.mode.press(self, key)

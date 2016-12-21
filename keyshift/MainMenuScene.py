@@ -75,7 +75,7 @@ class MainMenuScene(Scene):
 
         self.spacebar_text = Text(self.spacebar_frame)
         self.spacebar_text.set_text("CHANGE KEYBOARD LAYOUT", size=32)
-        self.spacebar_text.set_pos(288//2-self.spacebar_text.width//2, 47//2-self.spacebar_text.height//2)
+        self.spacebar_text.set_pos(self.spacebar.width//2-self.spacebar_text.width//2, self.spacebar.height//2-self.spacebar_text.height//2+2)
         self.add(self.spacebar_text)
 
 

@@ -13,7 +13,7 @@ class Text(Sprite):
 
         self.current_text = ""
 
-    def set_text(self, text, font_name=None, size=None):
+    def set_text(self, text, font_name=None, size=None, colour=(255, 255, 255)):
         """
         Renders text to the image of this sprite.
         :param text: One line string to render
@@ -33,6 +33,6 @@ class Text(Sprite):
 
         font = Resources.load_font(font_name, size)
 
-        self.image = font.render(text, 0, (255, 255, 255))
+        self.image = font.render(text, 0, colour)
         self.recalculate_rect()
         self.dirty = True
