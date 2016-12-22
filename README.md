@@ -1,5 +1,7 @@
 # keyshift
 
+[![](https://tokei.rs/b1/github/H4rtland/keyshift?category=code)](https://github.com/H4rtland/keyshift)
+
 A simple game about pressing the right keys at the right time. But the keys move.
 
 ![](https://raw.githubusercontent.com/H4rtland/keyshift/master/mainmenu_image.png)
